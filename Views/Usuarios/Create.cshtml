@@ -1,0 +1,302 @@
+﻿@model EntreEspeciesNuevo.Models.Usuario
+<head>
+    <link rel="stylesheet" href="~/css/form.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-switch@3.3.4/dist/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anta&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card rounded">
+            <div class="card-body">
+                <center> <h4 class="card-title" style="font-family: Arial, sans-serif;">Crear Usuario</h4></center>
+                <hr />
+                <form asp-action="Create" id="form">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="IdRol" class="control-label">Nombre Del Rol:</label>
+                        <select asp-for="IdRol" class="form-control" asp-items="ViewBag.IdRol"></select>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col"
+                            <label asp-for="TipoDoc" class="control-label">Tipo De Documento:</label>
+                            <select asp-for="TipoDoc" class="form-control">                       
+                                <option value="C.C">C.C</option>
+                                <option value="T.I">T.I</option>
+                                <option value="C.E">C.E</option>
+                            </select>
+                            <span asp-validation-for="TipoDoc" class="text-danger"></span>
+                        </div>
+                        <div class="col">
+                            <label asp-for="Documento" class="control-label">N° Documento:</label>
+                            <input asp-for="Documento" id="documento" class="form-control" type="text" oninput="validarDocumento(event)" />
+                            <span asp-validation-for="Documento" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col"
+                            <label asp-for="Nombre" class="control-label">Nombre y Apellido:</label>
+                            <input asp-for="Nombre" class="form-control" oninput="validarNombre(event)" />
+                            <span asp-validation-for="Nombre" class="text-danger"></span>
+                        </div>
+                        <div class="col">
+                            <label asp-for="Telefono" class="control-label">Teléfono:</label>
+                            <input asp-for="Telefono" class="form-control" type="text" oninput="validarTelefono(event)" />
+                            <span asp-validation-for="Telefono" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Correo" class="control-label">Correo:</label>
+                        <input asp-for="Correo" id="correo" class="form-control" />
+                        <span asp-validation-for="Correo" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Contraseña" class="control-label"></label>
+                        <input asp-for="Contraseña" class="form-control" />
+                        <span asp-validation-for="Contraseña" class="text-danger"></span>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col"
+                            <label asp-for="Estado" class="control-label">Estado:</label>
+                            <input asp-for="Estado" class="form-control" readonly value="Activo" />
+                            <span asp-validation-for="Estado" class="text-danger"></span>
+                        </div>
+                        <div class="col">
+                            <label asp-for="Direccion" class="control-label">Dirección:</label>
+                            <textarea asp-for="Direccion" class="form-control"></textarea>
+                            <span asp-validation-for="Direccion" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <center>
+                        <div class="form-group">
+                            <input type="submit" value="Crear" class="btn btn-primary" />
+                            <button type="button" onclick="window.location.href='@Url.Action("Index")'" class="btn btn-secondary btn-gray">Cancelar</button>
+                        </div>
+
+
+                    </center>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+
+        // Función para validar los campos antes de enviar el formulario
+        $("#form").submit(function (event) {
+            event.preventDefault(); // Evita que el formulario se envíe automáticamente
+
+            // Realizar todas las validaciones de los campos
+            if (!$(this).valid()) {
+                // Si alguna validación falla, retornar false para evitar el envío del formulario
+                return false;
+            }
+
+            // Validar el campo de documento antes de continuar
+            validarDocumento(function (documentoValido) {
+                if (!documentoValido) {
+                    // Si el documento no es válido, no se muestra la alerta de éxito y se detiene el envío del formulario
+                    return false;
+                }
+
+                // Validar el campo de correo electrónico antes de continuar
+                validarCorreo(function (correoValido) {
+                    if (!correoValido) {
+                        // Si el correo no es válido, no se muestra la alerta de éxito y se detiene el envío del formulario
+                        return false;
+                    }
+
+                    // Si el documento y el correo son válidos, se procede a validar los demás campos
+                    if (!validarCampo('TipoDoc', 'Debe Seleccionar un Tipo de Documento')) return false;
+                    if (!validarCampo('Documento', 'Debe Ingresar Un Documento')) return false;
+                    if (!validarCampo('Nombre', 'Debe Ingresar Un Nombre')) return false;
+                    if (!validarCampo('Telefono', 'Debe Ingresar Un Telefono')) return false;
+                    if (!validarCampo('Correo', 'Debe Ingresar Un Correo')) return false;
+                    if (!validarCampo('Contraseña', 'Debe Ingresar Una Contraseña')) return false;
+                    if (!validarCampo('Direccion', 'Debe Ingresar Una Direccion')) return false;
+
+                    // Mostrar ventana de confirmación solo si todos los campos están llenos y correctos
+                    mostrarAlerta();
+                });
+            });
+        });
+
+        // Función para validar el campo N° Documento
+        function validarDocumento(callback) {
+            var documento = document.getElementById("documento").value;
+            if (!documento) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Por Favor Llene Los Campos',
+                    text: 'Debe Ingresar Un Documento',
+                    footer: 'Sistema de Información'
+                });
+                callback(false); // Indicar que la validación del documento falló
+                return;
+            }
+
+            // Verificar en la base de datos si el documento ya existe
+            $.ajax({
+                url: '/Usuarios/ValidarDocumento',
+                method: 'POST',
+                data: { documento: documento },
+                success: function (response) {
+                    if (response.existe) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'El documento ya está registrado',
+                        });
+                        callback(false); // Indicar que la validación del documento falló
+                    } else {
+                        callback(true); // Indicar que la validación del documento fue exitosa
+                    }
+                }
+            });
+        }
+
+        // Función para validar el campo N° Documento
+        function validarCorreo(callback) {
+            var correo = document.getElementById("correo").value;
+            if (!correo) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Por Favor Llene Los Campos',
+                    text: 'Debe Ingresar Un correo',
+                    footer: 'Sistema de Información'
+                });
+                callback(false); // Indicar que la validación del correo falló
+                return;
+            }
+
+            // Verificar en la base de datos si el correo ya existe
+            $.ajax({
+                url: '/Usuarios/ValidarCorreo',
+                method: 'POST',
+                data: { correo: correo },
+                success: function (response) {
+                    if (response.existe) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'El correo ya está registrado',
+                        });
+                        callback(false); // Indicar que la validación del correo falló
+                    } else {
+                        callback(true); // Indicar que la validación del correo fue exitosa
+                    }
+                }
+            });
+        }
+
+        // Función para mostrar una alerta de éxito y redirigir después de 3 segundos
+        function mostrarAlerta() {
+            Swal.fire({
+                icon: 'success',
+                title: 'Registro Exitoso',
+                text: 'El Usuario se registró correctamente.',
+                footer: 'Sistema de Información',
+                showConfirmButton: false
+            });
+
+            setTimeout(function () {
+                // Envía el formulario una vez que se muestre el SweetAlert
+                document.getElementById("form").submit();
+            }, 3000);
+        }
+
+        // Función para validar los campos
+        function validarCampo(nombreCampo, mensaje) {
+            if ($("[name='" + nombreCampo + "']").val().trim().length < 1) {
+                mostrarAlertaWarning(mensaje);
+                return false;
+            }
+            return true;
+        }
+
+        // Función para mostrar una alerta de advertencia
+        function mostrarAlertaWarning(mensaje) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Por Favor Llene Los Campos',
+                text: mensaje,
+                footer: 'Sistema de Información'
+            });
+        }
+
+        // Función para mostrar una alerta de advertencia
+        function mostrarAlertaCorreo(mensaje) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: mensaje,
+
+            });
+        }
+        // Función para validar que solo se ingresen números en el campo Teléfono
+        function validarTelefono(event) {
+            const inputValue = event.target.value;
+
+            if (isNaN(inputValue)) {
+                event.target.value = inputValue.replace(/[^\d]/g, '');
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Carácter inválido',
+                    text: 'Solo se permite ingresar números',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        }
+
+        // Función para validar que solo se ingresen letras en el campo Nombre
+        function validarNombre(event) {
+            const inputValue = event.target.value;
+
+            if (/[^a-zA-ZñÑ\s]/.test(inputValue)) {
+                event.target.value = inputValue.replace(/[^a-zA-ZñÑ\s]/g, '');
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Carácter inválido',
+                    text: 'Solo se permite ingresar letras',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        }
+
+        function validarNumero(event) {
+            const charCode = event.keyCode;
+            // Permitir teclas de control como Enter, Tab, etc.
+            if (charCode == 13 || charCode == 9 || charCode == 8 || charCode == 46) {
+                return true;
+            }
+            // Permitir números solamente
+            if (charCode < 48 || charCode > 57) {
+                event.preventDefault();
+            }
+        }
+
+        // Evento que se dispara cuando cambia el valor del campo de correo
+        $("#correo").on("change", function () {
+            validarCorreo(function (correoValido) {
+                // Si el correo no es válido, mostrar alerta
+                if (!correoValido) {
+                    mostrarAlertaCorreo("El correo ya está registrado");
+                }
+            });
+        });
+    </script>
+}

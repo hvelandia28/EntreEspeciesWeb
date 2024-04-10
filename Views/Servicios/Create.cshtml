@@ -1,0 +1,190 @@
+﻿@model EntreEspeciesNuevo.Models.Servicio
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="~/css/form.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-switch@3.3.4/dist/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anta&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-4 form-container">
+            <center> <h4 class="card-title" style="font-family: Arial, sans-serif;">Crear Servicio</h4></center>
+            <hr />
+            <form asp-action="Create" id="form" >
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group">
+                    <label asp-for="NomServico" class="control-label">Nombre Del Servicio:</label>
+                    <input asp-for="NomServico"id="nombreServicio" class="form-control" oninput="validarDocumento(event)" />
+                    <span asp-validation-for="NomServico" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Categoria" class="control-label">Categoría:</label>
+                    <select asp-for="Categoria" class="form-control">
+                        <option value="Belleza">Belleza</option>
+                        <option value="Medicinal">Medicinal</option>
+                    </select>
+                    <span asp-validation-for="Categoria" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Precio" class="control-label">Precio:</label>
+                    <input asp-for="Precio" class="form-control" type="text" oninput="validarPrecio(event)" />
+                    <span asp-validation-for="Precio" class="text-danger"></span>
+                </div>
+
+                <div class="form-group text-center">
+                    <input type="submit" value="Crear" class="btn btn-primary" />
+                    <button type="button" onclick="window.location.href='@Url.Action("Index")'" class="btn btn-secondary btn-gray">Cancelar</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+
+        // Función para validar los campos antes de enviar el formulario
+        $("#form").submit(function (event) {
+            event.preventDefault(); // Evita que el formulario se envíe automáticamente
+
+            // Realizar todas las validaciones de los campos
+            if (!$(this).valid()) {
+                // Si alguna validación falla, retornar false para evitar el envío del formulario
+                return false;
+            }
+
+            // Validar el campo de documento antes de continuar
+            validarServicio(function (nombreValido) {
+                if (!nombreValido) {
+                    // Si el documento no es válido, no se muestra la alerta de éxito y se detiene el envío del formulario
+                    return false;
+                }
+
+                // Si el documento es válido, se procede a validar los demás campos
+                if (!validarCampo('NomServico', 'Debe Ingresar Un Nombre')) return false;
+                if (!validarCampo('Precio', 'Debe Ingresar Un Telefono')) return false;
+
+                // Mostrar ventana de confirmación solo si todos los campos están llenos y correctos
+                mostrarAlerta();
+            });
+        });
+        // Función para validar el campo N° Documento
+        function validarServicio(callback) {
+            var nombre = document.getElementById("nombreServicio").value;
+            if (!nombre) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Por Favor Llene Los Campos',
+                    text: 'Debe Ingresar Un Documento',
+                    footer: 'Sistema de Información'
+                });
+                callback(false); // Indicar que la validación del documento falló
+                return;
+            }
+
+            // Verificar en la base de datos si el documento ya existe
+            $.ajax({
+                url: '/Servicios/ValidarServicio',
+                method: 'POST',
+                data: { nombre: nombre },
+                success: function (response) {
+                    if (response.existe) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'El nombre ya está registrado',
+                        });
+                        callback(false); // Indicar que la validación del documento falló
+                    } else {
+                        callback(true); // Indicar que la validación del documento fue exitosa
+                    }
+                }
+            });
+        }
+
+        // Función para mostrar una alerta de éxito y redirigir después de 3 segundos
+        function mostrarAlerta() {
+            Swal.fire({
+                icon: 'success',
+                title: 'Registro Exitoso',
+                text: 'EL Servicio se registró correctamente.',
+                footer: 'Sistema de Información',
+                showConfirmButton: false
+            });
+
+            setTimeout(function () {
+                // Envía el formulario una vez que se muestre el SweetAlert
+                document.getElementById("form").submit();
+            }, 3000);
+        }
+
+        // Función para validar los campos
+        function validarCampo(nombreCampo, mensaje) {
+            if ($("[name='" + nombreCampo + "']").val().trim().length < 1) {
+                mostrarAlertaWarning(mensaje);
+                return false;
+            }
+            return true;
+        }
+
+        // Función para mostrar una alerta de advertencia
+        function mostrarAlertaWarning(mensaje) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Por Favor Llene Los Campos',
+                text: mensaje,
+                footer: 'Sistema de Información'
+            });
+        }
+        // Función para validar que solo se ingresen números en el campo Teléfono
+        function validarPrecio(event) {
+            const inputValue = event.target.value;
+
+            if (isNaN(inputValue)) {
+                event.target.value = inputValue.replace(/[^\d]/g, '');
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Carácter inválido',
+                    text: 'Solo se permite ingresar números',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        }
+
+        // Función para validar que solo se ingresen letras en el campo Nombre
+        function validarNombreServicio(event) {
+            const inputValue = event.target.value;
+
+            if (/[^a-zA-ZñÑ\s]/.test(inputValue)) {
+                event.target.value = inputValue.replace(/[^a-zA-ZñÑ\s]/g, '');
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Carácter inválido',
+                    text: 'Solo se permite ingresar letras',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        }
+    </script>
+
+}

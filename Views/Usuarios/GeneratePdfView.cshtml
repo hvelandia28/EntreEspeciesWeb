@@ -1,0 +1,68 @@
+﻿@model List<EntreEspeciesNuevo.Models.Usuario>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <title>Exportación PDF</title>
+    <style>
+        /* Puedes agregar estilos según tus necesidades */
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h2>Lista de Usuarios</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id Usuario</th>
+                <th>Id Rol</th>
+                <th>Nombre</th>
+                <th>Tipo Doc</th>
+                <th>Documento</th>
+                <th>Teléfono</th>
+                <th>Correo</th>
+                <th>Contraseña</th>
+                <th>Estado</th>
+                <th>Dirección</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var usuario in Model)
+            {
+                <tr>
+                    <td>@usuario.IdUsuario</td>
+                    <td>@usuario.IdRol</td>
+                    <td>@usuario.Nombre</td>
+                    <td>@usuario.TipoDoc</td>
+                    <td>@usuario.Documento</td>
+                    <td>@usuario.Telefono</td>
+                    <td>@usuario.Correo</td>
+                    <td>@usuario.Contraseña</td>
+                    <td>@usuario.Estado</td>
+                    <td>@usuario.Direccion</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>

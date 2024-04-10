@@ -1,0 +1,204 @@
+﻿@model IEnumerable<EntreEspeciesNuevo.Models.Proveedore>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    var RegistrarProveedores = ViewBag.RegistrarProveedores;
+    var ActualizarProveedores = ViewBag.ActualizarProveedores;
+    var EliminarProveedores = ViewBag.EliminarProveedores;
+    var VerProveedores = ViewBag.VerProveedores;
+}
+@if (VerProveedores)
+{
+    <head>
+        <link rel="stylesheet" href="~/css/site.css" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-switch@3.3.4/dist/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Anta&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    </head>
+
+    <div class="d-flex justify-content-between align-items-center">
+        <h1>Proveedores</h1>
+        @if (RegistrarProveedores)
+        {
+            <p>
+                <a class="btn btn-primary" asp-action="Create" style="margin-right: 20px;">Crear Proveedor</a>
+            </p>
+        }
+    </div>
+
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Nit del Proveedor
+                    </th>
+                    <th>
+                        Razón Social
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Correo)
+                    </th>
+                    <th>
+                        Teléfono
+                    </th>
+                    <th>
+                        Dirección
+                    </th>
+                    <th>
+                        Contacto
+                    </th>
+                    <th>
+                        Acciones
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NitProveedor)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NomProveedor)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Correo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Telefono)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Direccion)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.contacto)
+                        </td>
+                        <td>
+                            @if (ActualizarProveedores)
+                            {
+                                <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.IdProveedor">Editar</a>
+                            }
+                            @* @if (EliminarProveedores)
+                    {
+                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.IdProveedor">Cambio de Estado</a>
+                    } *@
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="modal fade" id="detalleModal" tabindex="-1" role="dialog" aria-labelledby="detalleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detalleModalLabel">Detalles de la Categoría</h5>
+                </div>
+                <div class="modal-body">
+                    <!-- Aquí puedes mostrar la información detallada de la categoría -->
+                    <div id="detalleContent"></div>
+                </div>
+                <div class="modal-footer mt-auto">
+                    <button type="button" class="btn btn-secondary" id="closeModalBtn" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section Scripts {
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                "language": {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+                },
+                "lengthMenu": [4, 6, 10, 15],
+                "pageLength": 10, // Número predeterminado de elementos por página
+                "search": {
+                    "search": "",
+                    "searchPlaceholder": "Buscar...",
+                },
+                "dom": '<"d-flex justify-content-between align-items-center"lf>t<"d-flex justify-content-between align-items-center"ip>',
+                "initComplete": function (settings, json) {
+                    $('.dataTables_filter input[type="search"]').css({ 'border-radius': '5px', 'padding-left': '10px' });
+                }
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const detalleButtons = document.querySelectorAll('.detalle-btn');
+
+            detalleButtons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    const proveedorId = button.getAttribute('data-id');
+
+                    // Realizar una solicitud AJAX para obtener los detalles del proveedor
+                    $.ajax({
+                        url: '@Url.Action("Details", "Proveedores")/' + proveedorId,
+                        type: 'GET',
+                        success: function (data) {
+                            // Mostrar los detalles en el modal
+                            const detalleContent = `
+                                                <p><strong>NIT:</strong> ${data.nitProveedor}</p>
+                                                <p><strong>Nombre:</strong> ${data.nomProveedor}</p>
+                                                <p><strong>Correo:</strong> ${data.correo}</p>
+                                                <p><strong>Teléfono:</strong> ${data.telefono}</p>
+                                                <p><strong>Dirección:</strong> ${data.direccion}</p>
+                                            `;
+                            document.getElementById('detalleContent').innerHTML = detalleContent;
+
+                            // Mostrar el modal
+                            $('#detalleModal').modal('show');
+                        },
+                        error: function () {
+                            // Manejar errores si la solicitud AJAX falla
+                            console.error('Error al obtener los detalles del proveedor.');
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            // Cierra el modal al hacer clic en el botón fuera del modal
+            $('#closeModalBtn').on('click', function () {
+                $('#detalleModal').modal('hide');
+            });
+        });
+    </script>
+}

@@ -1,0 +1,761 @@
+﻿@model EntreEspeciesNuevo.Models.VentaViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="~/css/veco.css" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+</head>
+
+
+<div class="container">
+    <center> <h4 class="card-title" style="font-family: Arial, sans-serif;">Crear Venta</h4></center>
+    <hr />
+    <form id="mainPurchaseForm" asp-action="Create">
+        <p>Fecha: @DateTime.Now.ToString("dd/MM/yyyy")</p>
+        @for (int i = 0; i < Model.Ventas.Count; i++)
+        {
+            @for (int j = 0; j < Model.DetalleVentas.Count; j++)
+            {
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="Ventas[i].DocumentoCliente" class="control-label">N° Documento:</label>
+                            <select id="IdCliente" asp-for="Ventas[i].DocumentoCliente" class="form-control select2 custom-select" asp-items="ViewBag.DocumentoCliente">
+                                <option value="">Ingrese el numero de Documento</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="Ventas[i].FormaPago" class="control-label">Forma De Pago:</label>
+                            <select asp-for="Ventas[i].FormaPago" class="form-control">
+                                <option value="">Seleccione el metodo de pago</option>
+                                <option value="Efectivo">Efectivo</option>
+                                <option value="Transferencia">Transferencia</option>
+                            </select>
+                            <span asp-validation-for="Ventas[i].FormaPago" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div id="producto" class="col-md-2">
+                        <button type="button" class="btn btn-success rounded-circle position-relative" onclick="mostrarCamposProducto()" style="background-color: blue;">
+                            <span class="fi fi-rr-plus"></span>
+                            <span class="position-absolute top-50 start-50 translate-middle text-white" style="display: none;">Agregar Producto</span>
+                        </button>
+                        <h9>Agregar Producto</h9><br>
+                    </div>
+                    <div id="cita" class="col-md-2">
+                        <button type="button" class="btn btn-success rounded-circle position-relative" onclick="mostrarCamposCita()" style="background-color: blue;">
+                            <span class="fi fi-rr-plus"></span>
+                            <span class="position-absolute top-50 start-50 translate-middle text-white" style="display: none;">Agregar Cita</span>
+                        </button>
+                        <h9>Agregar    Cita</h9>
+                    </div>
+                </div>
+                <div id="camposCita" style="display:none;">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="DetalleVentas[j].IdCitaInterna" class="control-label">Cita:</label>
+                                <select id="IdServicio" asp-for="DetalleVentas[j].IdCitaInterna" class="form-control" asp-items="ViewBag.IdCitaInt">
+                                    <option value="">Seleccione la cita</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="DetalleVentas[j].SubTotalSer" class="control-label">Precio:</label>
+                                <input id="SubSer" asp-for="DetalleVentas[j].SubTotalSer" class="form-control" readonly />
+                                <span asp-validation-for="DetalleVentas[j].SubTotalSer" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <!-- Botón para agregar detalles -->
+                                <button type="button" class="btn btn-primary" onclick="agregarDetalle(0)">Agregar</button>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <!-- Botón para agregar detalles -->
+                                <button type="button" class="btn btn-danger" onclick="ocultarCampos()">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="camposProducto" style="display:none;">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label asp-for="Ventas[i].IdCategoria" class="control-label">Categoria:</label>
+                                <select id="IdCategoria" asp-for="Ventas[i].IdCategoria" class="form-control" asp-items="ViewBag.IdCategoria">
+                                    <option value="">Seleccione una Categoria</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="DetalleVentas[j].IdProducto" class="control-label">Producto:</label>
+                                <select id="IdProducto" asp-for="DetalleVentas[j].IdProducto" class="form-control" asp-items="ViewBag.ProductosConDisponibilidad">
+                                    <option value="">Seleccione un Producto</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Precio del producto segun la compra</label>
+                                <input id="Subo" class="form-control" />
+                                <span class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="DetalleVentas[j].Cantidad" class="control-label">Cantidad:</label>
+                                <input id="Canti" asp-for="DetalleVentas[j].Cantidad" class="form-control" type="number" min="1" oninput="validarNumero(this)" />
+                                <span asp-validation-for="DetalleVentas[j].Cantidad" class="text-danger"></span>
+                            </div>
+                            <input type="hidden" id="CantidadProd" class="form-control" type="number" />
+                        </div>
+                        <input type="hidden" id="SubPro" asp-for="DetalleVentas[j].SubTotalPro" class="form-control" id="SubTotalPro" />
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <!-- Botón para agregar detalles -->
+                                <button type="button" class="btn btn-primary" onclick="agregarDetalle(0)">Agregar</button>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <!-- Botón para agregar detalles -->
+                                <button type="button" class="btn btn-danger" onclick="ocultarCampos()">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            }
+        }
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <li>@error.ErrorMessage</li>
+                    }
+                </ul>
+            </div>
+        }
+        <!-- Agrega este campo oculto dentro de tu formulario -->
+
+        <div class="table-container">
+            <input type="hidden" id="DetallesTemporales" name="DetallesTemporales" />
+            <div id="listaDetallesCompra">
+            </div>
+            <div id="totalSection" style="display:none;">
+                <h5>Total: $<span id="totalAmount">0.00</span></h5>
+            </div>
+
+        </div>
+        <div class="form-group text-center">
+            <button type="submit" text-center" class="btn btn-primary">Crear Venta</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/i18n/es.js"></script>
+    <script>
+        $("#mainPurchaseForm").submit(function () {
+            var documento = $("select[name='Ventas[0].DocumentoCliente']").val();
+            var formaPago = $("select[name='Ventas[0].FormaPago']").val();
+            // Validar si hay detalles agregados
+            if (detallesTemporales.length === 0 || documento === "" || formaPago === "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Debes agregar un producto o un servicio, el documento y la forma de pago',
+                });
+                return false;
+            }
+            return true;
+        });
+        function mostrarCamposProducto() {
+            $("#precipro").hide();
+            $("#camposProducto").show();
+            $("#producto").hide();
+            $("#cita").hide();
+        }
+        function ocultarCampos() {
+            $("#camposCita").hide();
+            $("#camposProducto").hide();
+            $("#producto").show();
+            $("#cita").show();
+        }
+        function mostrarCamposCita() {
+            var documento = $("select[name='Ventas[0].DocumentoCliente']").val();
+            var formaPago = $("select[name='Ventas[0].FormaPago']").val();
+            if (documento === "" || formaPago === "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Debe ingresar el documento del cliente y la forma de pago',
+                });
+                return false;
+
+            }
+            $("#camposCita").show();
+            $("#cita").hide();
+            $("#producto").hide();
+            return true;
+        }
+        function validarNumero(input) {
+            // Elimina caracteres no numéricos y asegura que el valor sea un número
+            input.value = input.value.replace(/\D/g, '');
+        }
+
+        var detallesTemporales = [];
+
+        // Función para obtener el nombre del producto seleccionado
+        function obtenerNombreProductoSeleccionado(idProducto) {
+            var productos = @Html.Raw(Json.Serialize(ViewBag.ProductosConDisponibilidad));
+            var nombreProducto = productos.find(p => p.value === idProducto)?.text;
+            return nombreProducto || '';
+        }
+
+        // Función para obtener el nombre del producto seleccionado
+        function obtenerNombreServicioSeleccionado(idServicio) {
+            var productos = @Html.Raw(Json.Serialize(ViewBag.IdCitaInt));
+            var nombreServicio = productos.find(p => p.value === idServicio)?.text;
+            return nombreServicio || '';
+        }
+
+        function agregarDetalle(j) {
+            console.log("Haciendo clic en agregarDetalle()");
+            var idServicio = $("#IdServicio").val();
+            var idProducto = $("#IdProducto").val();
+            var nombreProducto = obtenerNombreProductoSeleccionado(idProducto);
+            var nombreServicio = obtenerNombreServicioSeleccionado(idServicio);
+
+            // Verificar si se está agregando un producto o una cita
+            if (idServicio) {
+                // Si se está agregando una cita, verificar si ya existe en detallesTemporales
+                var citaExistente = detallesTemporales.find(detalle => detalle.IdCitaInterna === idServicio);
+                console.log(citaExistente);
+                if (citaExistente) {
+                    // Mostrar alerta indicando que la cita ya fue agregada
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Cita Existente',
+                        text: 'Esta cita ya ha sido agregada a los detalles temporales.',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    return;
+                }
+            } else if (idProducto) {
+                // Si se está agregando un producto, verificar si ya existe en detallesTemporales
+                var productoExistente = detallesTemporales.find(detalle => detalle.IdProducto === idProducto);
+                console.log(productoExistente);
+                if (productoExistente) {
+                    // Mostrar alerta indicando que el producto ya fue agregado
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Producto Existente',
+                        text: 'Este producto ya ha sido agregado a los detalles temporales.',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    return;
+                }
+
+            } else if (idProducto) {
+                // Si se está agregando un producto, verificar si ya existe en detallesTemporales
+                var productoExistente = detallesTemporales.find(detalle => detalle.IdProducto === idProducto);
+                console.log(productoExistente);
+                if (productoExistente) {
+                    // Mostrar alerta indicando que el producto ya fue agregado
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Producto Existente',
+                        text: 'Este producto ya ha sido agregado a los detalles temporales.',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    return;
+                }
+
+            }
+
+            var detalleCompra = {
+                IdCitaInterna: idServicio,
+                IdProducto: idProducto,
+                Cantidad: $("#Canti").val(),
+                NombreServicio: nombreServicio,
+                NombreProducto: nombreProducto,
+                SubTotalPro: $("#SubPro").val(),
+                SubTotalSer: $("#SubSer").val()
+            };
+
+            if ((detalleCompra.IdCitaInterna === "") && (detalleCompra.IdProducto === "" || detalleCompra.Cantidad <= 0)) {
+                // Mostrar alerta con SweetAlert
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Campos Vacíos',
+                    text: 'Debes ingresar un servicio o un producto con su cantidad mayor a 0.',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+
+                return; // Detener la ejecución si hay campos vacíos
+            }
+
+            detallesTemporales.push(detalleCompra);
+
+            // Limpiar los campos después de agregar el detalle
+            $("#IdServicio").val("");
+            $("#IdProducto").val("");
+            $("#Canti").val("");
+            $("#SubPro").val("");
+            $("#SubSer").val("");
+
+            // Actualizar el campo oculto con los detalles temporales
+            $("#DetallesTemporales").val(JSON.stringify(detallesTemporales));
+
+            // Limpiar la lista visual y agregar los detalles temporales
+            var listaDetallesCompra = $("#listaDetallesCompra");
+            listaDetallesCompra.empty();
+            // Crear la tabla y agregar eventos
+            if (detallesTemporales.length > 0) {
+                var table = $("<table>").addClass("table");
+                var thead = $("<thead>").append("<tr><th>Producto/Servicio</th><th>Cantidad</th><th>Precio</th><th>Acciones</th></tr>");
+                var tbody = $("<tbody>");
+
+                for (var i = 0; i < detallesTemporales.length; i++) {
+                    var detalle = detallesTemporales[i];
+
+                    var row = $("<tr>");
+                    // Mostrar el nombre del producto o servicio
+                    row.append("<td>" + (detalle.IdCitaInterna !== "" ? detalle.NombreServicio : detalle.NombreProducto) + "</td>");
+
+                    // Establecer la cantidad como 1 si es un servicio
+                    if (detalle.IdCitaInterna !== "") {
+                        row.append("<td>1</td>");
+                    } else {
+                        var cantidad = detalle.Cantidad;
+                        row.append("<td><input type='number' class='form-control cantidad-input' value='" + cantidad + "'></td>");
+                    }
+
+                    // Mostrar el precio correspondiente (servicio o producto)
+                    var precio = detalle.IdCitaInterna !== "" ? detalle.SubTotalSer : detalle.SubTotalPro;
+                    row.append("<td id='precio_" + i + "'>" + precio + "</td>");
+
+                    // Agregar botones de Editar y Eliminar
+                    var eliminarButton = $("<button>").text("Eliminar").addClass("btn btn-danger btn-sm").attr("data-index", i);
+                    var accionesCell = $("<td>").append(eliminarButton);
+
+                    row.append(accionesCell);
+                    tbody.append(row);
+                }
+
+                table.append(thead).append(tbody);
+                listaDetallesCompra.append(table);
+                // Ocultar camposProducto después de agregar detalles
+                $("#camposCita").hide();
+                $("#camposProducto").hide();
+                $("#producto").show();
+                $("#cita").show();
+            } else {
+                listaDetallesCompra.append("<p>No hay detalles agregados</p>");
+                $("#totalSection").hide();
+            }
+            // Agregar eventos click para los botones de Editar y Eliminar
+            $(".btn-danger").on("click", function () {
+                var index = $(this).data("index");
+                eliminarDetalle(index);
+            });
+            // Agregar eventos change para los inputs de cantidad en la tabla temporal
+            $(document).on("change", ".cantidad-input", function () {
+                // Almacenar una referencia al elemento actual
+                var inputCantidad = $(this);
+
+                // Obtener el índice de la fila
+                var index = inputCantidad.closest("tr").index();
+
+                // Obtener el detalle correspondiente al índice
+                var detalle = detallesTemporales[index];
+
+                // Obtener la nueva cantidad ingresada
+                var nuevaCantidad = parseFloat(inputCantidad.val());
+
+                // Validar la cantidad
+                if (!isNaN(nuevaCantidad)) {
+                    var productId = detalle.IdProducto;
+
+                    if (productId) {
+                        // Obtener el precio del producto
+                        obtenerPrecioProducto(productId, function (precio) {
+                            if (precio === null) {
+                                // Manejar el caso en que no se pueda obtener el precio
+                                console.error('No se pudo obtener el precio del producto para esta fila.');
+                                return;
+                            }
+
+                            // Realizar una llamada AJAX para obtener la cantidad disponible del producto
+                            $.ajax({
+                                url: '/Productoes/GetCantidad?productId=' + productId,
+                                type: 'GET',
+                                success: function (cantidadDisponible) {
+                                    if (nuevaCantidad > cantidadDisponible || nuevaCantidad === 0) {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Cantidad no disponible',
+                                            text: '¡No hay suficientes unidades disponibles!',
+                                        });
+
+                                        // Restaurar la cantidad anterior
+                                        inputCantidad.val(detalle.Cantidad);
+                                    } else {
+                                        var can = detalle.Cantidad;
+                                        // Actualizar la cantidad en el detalle temporal
+                                        detalle.Cantidad = nuevaCantidad;
+
+                                        // Actualizar el campo oculto con los detalles temporales
+                                        $("#DetallesTemporales").val(JSON.stringify(detallesTemporales));
+                                        var sub = detalle.SubTotalPro;
+                                        var pre = sub / can;
+                                        // Calcular el nuevo precio
+                                        var nuevoPrecio = nuevaCantidad * pre;
+
+                                        // Actualizar el precio en la tabla
+                                        $("#precio_" + index).text(nuevoPrecio);
+                                        detalle.SubTotalPro = nuevoPrecio;
+                                        calcularTotal();
+                                    }
+                                },
+                                error: function () {
+                                    // Manejar errores si es necesario
+                                }
+                            });
+                        });
+                    } else {
+                        console.error('No se pudo obtener el ID del producto para esta fila.');
+                    }
+                }
+            });
+            function obtenerPrecioProducto(productId, callback) {
+                $.ajax({
+                    url: '/Productoes/GetPrecioProducto?productId=' + productId,
+                    type: 'GET',
+                    success: function (precio) {
+                        callback(precio);
+                    },
+                    error: function () {
+                        // Manejar errores si es necesario
+                        callback(null);
+                    }
+                });
+            }
+
+            function eliminarDetalle(index) {
+                detallesTemporales.splice(index, 1);
+                // Actualizar el campo oculto con los detalles temporales
+                $("#DetallesTemporales").val(JSON.stringify(detallesTemporales));
+                // Volver a renderizar la lista de detalles
+                renderizarDetalles();
+                calcularTotal();
+            }
+
+            function renderizarDetalles() {
+                // Limpiar la lista visual y agregar los detalles temporales
+                var listaDetallesCompra = $("#listaDetallesCompra");
+                listaDetallesCompra.empty();
+                // Crear la tabla y agregar eventos
+                if (detallesTemporales.length > 0) {
+                    var table = $("<table>").addClass("table");
+                    var thead = $("<thead>").append("<tr><th>Producto/Servicio</th><th>Cantidad</th><th>Precio</th><th>Acciones</th></tr>");
+                    var tbody = $("<tbody>");
+
+                    for (var i = 0; i < detallesTemporales.length; i++) {
+                        var detalle = detallesTemporales[i];
+
+                        var row = $("<tr>");
+                        // Mostrar el nombre del producto o servicio
+                        row.append("<td>" + (detalle.IdCitaInterna !== "" ? detalle.NombreServicio : detalle.NombreProducto) + "</td>");
+
+                        // Establecer la cantidad como 1 si es un servicio
+                        if (detalle.IdCitaInterna !== "") {
+                            row.append("<td>1</td>");
+                        } else {
+                            var cantidad = detalle.Cantidad;
+                            row.append("<td><input type='number' class='form-control cantidad-input' value='" + cantidad + "'></td>");
+                        }
+
+                        // Mostrar el precio correspondiente (servicio o producto)
+                        var precio = detalle.IdCitaInterna !== "" ? detalle.SubTotalSer : detalle.SubTotalPro;
+                        row.append("<td id='precio_" + i + "'>" + precio + "</td>");
+
+                        // Agregar botones de Editar y Eliminar
+                        var eliminarButton = $("<button>").text("Eliminar").addClass("btn btn-danger btn-sm").attr("data-index", i);
+                        var accionesCell = $("<td>").append(eliminarButton);
+
+                        row.append(accionesCell);
+                        tbody.append(row);
+                    }
+
+                    table.append(thead).append(tbody);
+                    listaDetallesCompra.append(table);
+                    // Ocultar camposProducto después de agregar detalles
+                    $("#camposCita").hide();
+                    $("#camposProducto").hide();
+                    $("#producto").show();
+                    $("#cita").show();
+
+                    // Agregar eventos click para los botones de Editar y Eliminar
+                    $(".btn-danger").on("click", function () {
+                        var index = $(this).data("index");
+                        eliminarDetalle(index);
+                    });
+
+                } else {
+                    listaDetallesCompra.append("<p>No hay detalles agregados</p>");
+                    $("#totalSection").hide();
+                }
+            }
+            calcularTotal();
+        }
+        function calcularTotal() {
+            // Verificar si detallesTemporales está vacío
+            if (detallesTemporales.length === 0) {
+                // Ocultar la sección total cuando no hay detalles
+                $("#totalSection").hide();
+                return; // Salir de la función si no hay detalles
+            }
+            $("#totalSection").show();
+            // Calcular el total sumando ambos subtotales
+            var total = 0;
+            for (var i = 0; i < detallesTemporales.length; i++) {
+                var detalle = detallesTemporales[i];
+                total += parseFloat(detalle.SubTotalPro) || 0;
+                total += parseFloat(detalle.SubTotalSer) || 0;
+            }
+
+            // Mostrar el total actualizado
+            $("#totalAmount").text(total.toFixed(2));
+        }
+
+        // Actualizar el nombre del producto seleccionado cuando cambia la selección
+        $("#DetalleVentas_" + j + "__IdProducto").change(function () {
+            var idProductoSeleccionado = $(this).val();
+            var nombreProductoSeleccionado = obtenerNombreProductoSeleccionado(idProductoSeleccionado);
+            $("#productoSeleccionadoNombre").text("Producto Seleccionado: " + nombreProductoSeleccionado);
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('.select2').select2({
+                language: "es",
+                minimumInputLength: 1, // Mínimo de caracteres antes de realizar la búsqueda
+                minimumResultsForSearch: 0, // Deshabilitar la búsqueda cuando hay pocos resultados
+            });
+            // Evento cuando cambia la categoría
+            $("#IdCategoria").change(function () {
+                var idCategoriaSeleccionada = $(this).val();
+
+                // Realizar la solicitud AJAX para obtener productos por categoría
+                $.get("/Ventas/ObtenerProductosPorCategoria", { idCategoria: idCategoriaSeleccionada }, function (data) {
+                    // Limpiar y actualizar la lista de productos
+                    var selectProducto = $("#IdProducto");
+                    selectProducto.empty();
+                    // Agregar la opción "Seleccione un Producto" al principio
+                    selectProducto.append($('<option>', {
+                        value: '',
+                        text: 'Seleccione un Producto'
+                    }));
+
+                    // Agregar opciones basadas en los datos recibidos
+                    $.each(data, function (index, item) {
+                        selectProducto.append($('<option>', {
+                            value: item.idProducto,
+                            text: item.nomProducto
+                        }));
+                    });
+                });
+            });
+            // Evento cuando cambia la categoría
+            $("#IdCliente").change(function () {
+                var idCategoriaSeleccionada = $(this).val();
+
+                // Realizar la solicitud AJAX para obtener productos por categoría
+                $.get("/Ventas/ObtenerCitaPorCategoria", { idCategoria: idCategoriaSeleccionada }, function (data) {
+                    // Limpiar y actualizar la lista de productos
+                    var selectProducto = $("#IdServicio");
+                    selectProducto.empty();
+                    // Agregar la opción "Seleccione un Producto" al principio
+                    selectProducto.append($('<option>', {
+                        value: '',
+                        text: 'Seleccione una Cita'
+                    }));
+
+                    // Agregar opciones basadas en los datos recibidos
+                    $.each(data, function (index, item) {
+                        selectProducto.append($('<option>', {
+                            value: item.idProducto,
+                            text: item.nomProducto
+                        }));
+                    });
+                });
+            });
+            var productId;
+
+            $('#IdProducto').change(function () {
+                productId = $(this).val();
+                if (productId) {
+                    $.ajax({
+                        url: '/Productoes/GetPrecioProducto?productId=' + productId,
+                        type: 'GET',
+                        success: function (data) {
+                            $('#Subo').text(data);
+                            actualizarSubTotal();
+                        },
+                        error: function () {
+                            // Manejar errores si es necesario
+                        }
+                    });
+                }
+            });
+            var precioObtenido = 0;
+            $('#IdProducto').change(function () {
+                var productId = $(this).val();
+                if (productId) {
+                    $.ajax({
+                        url: '/Productoes/GetCantidad?productId=' + productId,
+                        type: 'GET',
+                        success: function (data) {
+                            precioObtenido = data.precio;
+                            $('#Canti').attr('placeholder', 'Cantidad disponible: ' + data);
+                            $('#Canti').val('');
+                        },
+                        error: function () {
+                            // Manejar errores si es necesario
+                        }
+                    });
+                }
+            });
+            $('#Canti').on('input', function () {
+                var cantidad = parseFloat($(this).val());
+                if (cantidad === 0) {
+                    alert('La cantidad no puede ser cero.');
+                    $(this).val('');
+                    return;
+                }
+
+                $.ajax({
+                    url: '/Productoes/GetCantidad?productId=' + productId,
+                    type: 'GET',
+                    success: function (data) {
+                        if (!isNaN(cantidad) && cantidad > data) {
+                            alert('¡No hay suficientes unidades disponibles!');
+                            $('#Canti').val('');
+                        } else {
+                            actualizarSubTotal();
+                        }
+                    },
+                    error: function () {
+                        // Manejar errores si es necesario
+                    }
+                });
+            });
+            // Evento change para el input de precio
+            $('#Subo').change(function () {
+                var precioIngresado = parseFloat($(this).val());
+                if (precioIngresado < precioObtenido) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Precio Menor',
+                        text: 'El precio ingresado es menor que el precio obtenido.',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    // Restaurar el precio almacenado si es necesario
+                    $(this).val(precioObtenido);
+                }
+            });
+
+
+            $('#Canti').on('input', function () {
+                actualizarSubTotal();
+            });
+        });
+
+        function actualizarSubTotal() {
+            var precio = parseFloat($('#Subo').val());
+            var cantidad = parseFloat($('#Canti').val());
+
+            if (!isNaN(precio) && !isNaN(cantidad)) {
+                var subTotalPro = precio * cantidad;
+                var subTotalProSinDecimales = Math.round(subTotalPro);
+                $('#SubPro').val(subTotalProSinDecimales);
+            } else {
+                $('#SubPro').val('');
+            }
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#IdServicio").change(function () {
+                var selectedServicioId = $(this).val();
+                if (selectedServicioId) {
+                    $.ajax({
+                        url: "/CitaInternas/GetPrecioProducto",
+                        type: "GET",
+                        data: { servicioId: selectedServicioId },
+                        success: function (result) {
+                            $("#SubSer").val(result);
+                        },
+                        error: function (error) {
+                            console.error("Error al obtener el precio del servicio: ", error);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#IdProducto").change(function () {
+                var selectedServicioId = $(this).val();
+                if (selectedServicioId) {
+                    $.ajax({
+                        url: "/Productoes/GetPrecioProducto",
+                        type: "GET",
+                        data: { productId: selectedServicioId },
+                        success: function (result) {
+                            $("#Subo").val(result);
+                        },
+                        error: function (error) {
+                            console.error("Error al obtener el precio del servicio: ", error);
+                        }
+                    });
+                    $.ajax({
+                        url: "/Productoes/GetCantidad",
+                        type: "GET",
+                        data: { productId: selectedServicioId },
+                        success: function (result) {
+                            $("#CantidadProd").val(result);
+                        },
+                        error: function (error) {
+                            console.error("Error al obtener el precio del servicio: ", error);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

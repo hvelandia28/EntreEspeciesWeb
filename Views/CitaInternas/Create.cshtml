@@ -1,0 +1,333 @@
+﻿@model EntreEspeciesNuevo.models.CitaInterna
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/form.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-switch@3.3.4/dist/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anta&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card rounded">
+            <div class="card-body">
+                <center> <h4 class="card-title" style="font-family: Arial, sans-serif;">Crear Cita</h4></center>
+                <hr />
+                <form asp-action="Create" id="form">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group row">
+                        <div class="col">
+                            <label asp-for="DocumentoCliente">Documento del Cliente:</label>
+                            <input asp-for="DocumentoCliente" class="form-control" required />
+                            <span asp-validation-for="DocumentoCliente" class="text-danger"></span>
+                        </div>
+                        <div class="col">
+                            <label asp-for="IdMascota">Nombre de la Mascota:</label>
+                            <select asp-for="IdMascota" class="form-control">
+                                <option value=""></option>
+                            </select>
+                            <span asp-validation-for="IdMascota" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col">
+                            <label asp-for="IdServicio">Nombre del servicio:</label>
+                            <select id="IdServicio" asp-for="IdServicio" class="form-control" asp-items="ViewBag.IdServicio">
+                                <option value="">Seleccionar Servicio</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <label asp-for="Precio">Precio</label>
+                            <input id="SubSer" asp-for="Precio" class="form-control" readonly />
+                            <span asp-validation-for="Precio" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="FechaHora">Fecha y Hora:</label>
+                        <input id="fechaHora" asp-for="FechaHora" class="form-control" type="datetime-local" onchange="validarFecha()" required />
+                        <span asp-validation-for="FechaHora" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col">
+                            <label asp-for="Estado">Estado:</label>
+                            <input asp-for="Estado" class="form-control" readonly value="Pendiente" />
+                            <span asp-validation-for="Estado" class="text-danger"></span>
+                        </div>
+                        <div class="col">
+                            <label asp-for="PersonaCargo">Persona a Cargo:</label>
+                            <input asp-for="PersonaCargo" class="form-control" required oninput="validatePersonaCargo(event)" />
+                            <span asp-validation-for="PersonaCargo" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <br />
+                    <div class="form-group text-center">
+                        <input type="submit" value="Crear" class="btn btn-primary" />
+                        <button type="button" onclick="window.location.href='@Url.Action("Index")'" class="btn btn-secondary btn-gray">Cancelar</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function validarFecha() {
+            var fechaHora = document.getElementById("fechaHora").value;
+
+            if (!fechaHora) {
+                mostrarAlertaWarning('Debe ingresar una fecha y hora para la cita.');
+                return;
+            }
+
+            // Verificar en la base de datos si la cita ya existe para la fecha y hora seleccionadas
+            $.ajax({
+                url: '/CitaInternas/VerificarDisponibilidad',
+                method: 'POST',
+                data: { fechaHora: fechaHora },
+                success: function (response) {
+                    if (!response.citaDisponible) {
+                        mostrarAlertaErrorF('Ya existe una cita registrada para la fecha y hora seleccionadas.');
+                        // Limpiar la fecha y hora seleccionadas
+                        document.getElementById("fechaHora").value = '';
+                    }
+                },
+                error: function () {
+                    mostrarAlertaWarning('Error al verificar la disponibilidad de la cita.');
+                }
+            });
+        }
+    </script>
+
+
+    <script>
+        // Función para validar los campos antes de enviar el formulario
+        $("#form").submit(function () {
+            // Realizar todas las validaciones de los campos
+            if (!$(this).valid()) {
+                // Si alguna validación falla, retornar false para evitar el envío del formulario
+                return false;
+            }
+
+            if (!validarCampo('DocumentoCliente', 'Debe Ingresar Un Documento')) return false;
+            if (!validarCampo('IdServicio', 'Debe Seleccionar Un Nombre Para El Servicio')) return false;
+            if (!validarCampo('FechaHora', 'Debe Ingresar Una Fecha')) return false;
+            if (!validarCampo('PersonaCargo', 'Debe Ingresar Una Persona a Cargo')) return false;
+            if (!validarDocumento()) return false;
+
+            // Mostrar ventana de confirmación
+            mostrarAlerta();
+            return false; // Evitar el envío del formulario
+        });
+
+        var documentoCorrecto = false; // Variable para verificar si el documento del cliente está correcto
+
+        function validarCampo(nombreCampo, mensaje) {
+            if ($("[name='" + nombreCampo + "']").val().trim().length < 1) {
+                mostrarAlertaWarning(mensaje);
+                return false;
+            }
+            return true;
+        }
+
+        function mostrarAlertaWarning(mensaje) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Por Favor Llene Los Campos',
+                text: mensaje,
+                footer: 'Sistema de Información'
+            });
+        }
+
+        function mostrarAlertaErrorD(mensaje) {
+            Swal.fire({
+                icon: 'error',
+                title: 'N° Documento Incorrecto',
+                text: mensaje,
+                footer: 'Sistema de Información'
+            });
+        }
+
+        function mostrarAlertaErrorF(mensaje) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Fecha Incorrecta',
+                text: mensaje,
+                footer: 'Sistema de Información'
+            });
+        }
+
+        function validatePersonaCargo(event) {
+            const inputValue = event.target.value;
+
+            if (/[^a-zA-Z\s]/.test(inputValue)) {
+                event.target.value = inputValue.replace(/[^a-zA-Z\s]/g, '');
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Carácter inválido',
+                    text: 'Solo se permite ingresar letras',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        }
+
+        function validatedocumento(event) {
+            const keyCode = event.keyCode || event.which;
+            const allowedKeys = [8, 9, 37, 39, 46]; // Teclas permitidas: retroceso, tabulación, flechas izquierda/derecha, suprimir
+            const inputValue = event.target.value;
+
+            if (!allowedKeys.includes(keyCode) && isNaN(inputValue)) {
+                // Eliminar el último carácter ingresado
+                event.target.value = event.target.value.slice(0, -1);
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Carácter inválido',
+                    text: 'Solo se permite ingresar números',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        }
+
+        // Script para la obtención de mascotas por documento
+        $("#DocumentoCliente").on('input', function () {
+            var documentoCliente = $(this).val();
+            if (documentoCliente.trim() !== '') {
+                $.ajax({
+                    url: "/CitaInternas/ObtenerMascotasPorDocumento",
+                    data: { documentoCliente: documentoCliente },
+                    type: "GET",
+                    success: function (data) {
+                        // Limpiar y agregar las opciones al select de IdMascota
+                        $("#IdMascota").empty();
+                        $.each(data, function (index, item) {
+                            $("#IdMascota").append('<option value="' + item.value + '">' + item.text + '</option>');
+                        });
+                    },
+                    error: function (response) {
+                        console.log(response);
+                    }
+                });
+            } else {
+                // Limpiar el select de IdMascota si el campo DocumentoCliente está vacío
+                $("#IdMascota").empty();
+            }
+        });
+
+        // Función para validar el documento del cliente
+        function validarDocumento() {
+            var documento = $('#DocumentoCliente').val();
+            $.ajax({
+                url: "/Clientes/ValidarDocumento",
+                data: { documento: documento },
+                type: "POST",
+                async: false, // Hacer la solicitud de forma sincrónica para que documentoCorrecto se actualice antes de continuar
+                success: function (data) {
+                    documentoCorrecto = data.existe;
+                    if (!documentoCorrecto) {
+                        mostrarAlertaErrorD('El documento del cliente no está registrado.');
+                    }
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+            });
+            return documentoCorrecto;
+        }
+
+        function mostrarAlerta() {
+            if (documentoCorrecto) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Registro Exitoso',
+                    text: 'La Cita se registró correctamente.',
+                    footer: 'Sistema de Información',
+                    showConfirmButton: false
+                });
+                setTimeout(function () {
+                    // Envía el formulario una vez que se muestre el SweetAlert
+                    document.getElementById("form").submit();
+                }, 3000);
+
+            }
+        }
+    </script>
+    <script>
+        // Obtener el campo de entrada de fecha y hora
+        var fechaHoraInput = document.getElementById('fechaHora');
+
+        // Agregar un escuchador de eventos al campo de entrada de fecha y hora
+        fechaHoraInput.addEventListener('change', function () {
+            // Obtener la fecha y hora seleccionadas
+            var fechaHoraSeleccionada = new Date(this.value);
+
+            // Obtener la fecha actual
+            var fechaActual = new Date();
+
+            // Calcular la fecha máxima permitida (30 días en el futuro)
+            var fechaMaxima = new Date();
+            fechaMaxima.setDate(fechaMaxima.getDate() + 30);
+
+            // Comparar las fechas
+            if (fechaHoraSeleccionada < fechaActual || fechaHoraSeleccionada > fechaMaxima) {
+                // La fecha y hora seleccionada es una fecha pasada o más de 30 días en el futuro
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Fecha Incorrecta',
+                    text: 'Por favor, selecciona una fecha y hora válida dentro de los próximos 30 días.',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Ok',
+                    footer: 'Sistema de Información'
+                }).then((result) => {
+                    this.value = ''; // Limpiar el campo de entrada
+                });
+            }
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#IdServicio").change(function () {
+                var selectedServicioId = $(this).val();
+                if (selectedServicioId) {
+                    $.ajax({
+                        url: "/Servicios/GetPrecioProducto",
+                        type: "GET",
+                        data: { servicioId: selectedServicioId },
+                        success: function (result) {
+                            $("#SubSer").val(result);
+                        },
+                        error: function (error) {
+                            console.error("Error al obtener el precio del servicio: ", error);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+}

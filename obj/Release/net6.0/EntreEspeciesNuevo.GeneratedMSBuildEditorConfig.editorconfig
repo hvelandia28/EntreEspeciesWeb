@@ -1,0 +1,375 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = EntreEspeciesNuevo
+build_property.RootNamespace = EntreEspeciesNuevo
+build_property.ProjectDir = C:\Users\jsote\Downloads\EntreEspeciesNuevo Luis\EntreEspeciesNuevo\EntreEspeciesNuevo\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\jsote\Downloads\EntreEspeciesNuevo Luis\EntreEspeciesNuevo\EntreEspeciesNuevo
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Acceso/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjZXNvXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Acceso/OlvidoContraseña.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjZXNvXE9sdmlkb0NvbnRyYXNlw7FhLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Acceso/ResetPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjZXNvXFJlc2V0UGFzc3dvcmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Categorias/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcmlhc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Categorias/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcmlhc1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Categorias/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcmlhc1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Categorias/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcmlhc1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Categorias/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcmlhc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/CitaExternas/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2l0YUV4dGVybmFzXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/CitaExternas/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2l0YUV4dGVybmFzXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/CitaExternas/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2l0YUV4dGVybmFzXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/CitaExternas/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2l0YUV4dGVybmFzXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/CitaExternas/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2l0YUV4dGVybmFzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/CitaInternas/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2l0YUludGVybmFzXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/CitaInternas/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2l0YUludGVybmFzXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/CitaInternas/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2l0YUludGVybmFzXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/CitaInternas/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2l0YUludGVybmFzXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/CitaInternas/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2l0YUludGVybmFzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Clientes/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50ZXNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Clientes/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50ZXNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Clientes/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50ZXNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Clientes/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50ZXNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Clientes/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50ZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Compras/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcHJhc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Compras/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcHJhc1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Compras/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcHJhc1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Compras/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcHJhc1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Compras/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcHJhc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Configuracions/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29uZmlndXJhY2lvbnNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Configuracions/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29uZmlndXJhY2lvbnNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Configuracions/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29uZmlndXJhY2lvbnNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Configuracions/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29uZmlndXJhY2lvbnNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Configuracions/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29uZmlndXJhY2lvbnNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/DetaCompras/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGV0YUNvbXByYXNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/DetaCompras/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGV0YUNvbXByYXNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/DetaCompras/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGV0YUNvbXByYXNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/DetaCompras/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGV0YUNvbXByYXNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/DetaCompras/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGV0YUNvbXByYXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/DetaVentums/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGV0YVZlbnR1bXNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/DetaVentums/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGV0YVZlbnR1bXNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/DetaVentums/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGV0YVZlbnR1bXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Mascotas/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFzY290YXNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Mascotas/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFzY290YXNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Mascotas/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFzY290YXNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Mascotas/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFzY290YXNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Mascotas/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFzY290YXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Permisoes/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVybWlzb2VzXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Permisoes/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVybWlzb2VzXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Permisoes/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVybWlzb2VzXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Permisoes/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVybWlzb2VzXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Permisoes/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVybWlzb2VzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Productoes/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdG9lc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Productoes/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdG9lc1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Productoes/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdG9lc1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Productoes/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdG9lc1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Productoes/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdG9lc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Proveedores/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvdmVlZG9yZXNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Proveedores/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvdmVlZG9yZXNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Proveedores/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvdmVlZG9yZXNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Proveedores/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvdmVlZG9yZXNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Proveedores/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvdmVlZG9yZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Roles/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9sZXNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Roles/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9sZXNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Roles/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9sZXNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Roles/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9sZXNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Roles/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9sZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Servicios/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljaW9zXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Servicios/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljaW9zXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Servicios/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljaW9zXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Servicios/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljaW9zXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Servicios/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljaW9zXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Usuarios/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb3NcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Usuarios/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb3NcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Usuarios/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb3NcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Usuarios/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb3NcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Usuarios/GeneratePdfView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb3NcR2VuZXJhdGVQZGZWaWV3LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Usuarios/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb3NcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Ventas/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVudGFzXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Ventas/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVudGFzXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Ventas/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVudGFzXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Ventas/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVudGFzXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Ventas/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVudGFzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jsote/Downloads/EntreEspeciesNuevo Luis/EntreEspeciesNuevo/EntreEspeciesNuevo/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-5bz0sd3djh

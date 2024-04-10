@@ -1,0 +1,148 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var nombreMes = DateTime.Now.ToString("MMMM", new System.Globalization.CultureInfo("es-ES"));
+
+}
+@{
+    var VerDashboards = ViewBag.VerDashboards;
+}
+
+@if (VerDashboards)
+{
+<head>
+    <link rel="stylesheet" href="~/css/dashbo.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-switch@3.3.4/dist/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anta&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+
+
+ <div class="card-bobo" style="display: flex;">
+    <div class="card-body" style="margin-left: 60px; margin-top: 20px;">
+        <h2 style="text-align: center;  margin-top: 40px;">Productos más comprados</h2>
+        <canvas id="graficoProductos"></canvas>
+        <br />
+        <br />
+        <div style="text-align: center;">
+            <h2><strong>Ventas de @nombreMes</strong></h2>
+            <h3>Total de ventas del mes actual es:<strong> @string.Format("${0:#,##0}", ViewBag.TotalVentasMes)</strong></h3>
+        </div>
+    </div>
+
+    <div class="card-body" style="margin-left: 60px; font-size: larger;">
+        <div style="flex: 1; display: flex; flex-direction: column;">
+            <h2 style="text-align: center;">Servicios más adquiridos</h2>
+            <canvas id="graficoCitas"></canvas>
+        </div>
+        <div style="margin-top: 90px;">
+            <h2 style="text-align: center;">Clientes con más compras</h2>
+            <canvas id="graficoClientes"></canvas>
+        </div>
+    </div>
+</div>
+}
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx = document.getElementById('graficoCitas').getContext('2d');
+        var graficoCitas = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(ViewBag.CitaInternas)),
+                datasets: [{
+                    label: 'Cantidad de Ventas',
+                    data: @Html.Raw(Json.Serialize(ViewBag.CantidadVentas)),
+                    backgroundColor: 'blue', // Color de fondo de las barras
+                    borderColor: 'rgba(54, 162, 235, 1)', // Color del borde de las barras
+                    borderWidth: 3,
+                    barThickness: 25 // Puedes ajustar este valor según lo delgado que quieras las barras
+
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false // Oculta la leyenda
+                    }
+                }
+            }
+        });
+
+
+        var ctx2 = document.getElementById('graficoClientes').getContext('2d');
+        var graficoClientes = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(ViewBag.ClientesMasCompradores)),
+                datasets: [{
+                    label: 'Total Comprado',
+                    data: @Html.Raw(Json.Serialize(ViewBag.TotalCompradoPorCliente)),
+                    backgroundColor: 'rgba(0, 128, 255, 0.6)',
+                    borderColor: 'rgba(0, 128, 255, 0.6)',
+                    borderWidth: 3,
+                    barThickness: 25 // Puedes ajustar este valor según lo delgado que quieras las barras
+
+                }]
+            },
+            options: {
+                scales: {   
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false // Oculta la leyenda
+                    }
+                }
+            }
+        });
+
+
+
+        var ctx = document.getElementById('graficoProductos').getContext('2d');
+        var graficoProductos = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(ViewBag.ProductosMasComprados)),
+                datasets: [{
+                    label: 'Cantidad comprada', // Actualizada la etiqueta del dataset
+                    data: @Html.Raw(Json.Serialize(ViewBag.Cantidades)), // Utiliza las cantidades en lugar de los totales
+                    backgroundColor: [
+                        'blue', // Blue
+                        'rgba(24, 100, 161, 1)',
+                       
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                       
+                    ],
+                    borderWidth: 3,
+                    barThickness: 25 // Puedes ajustar este valor según lo delgado que quieras las barras
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false // Oculta la leyenda
+                    }
+                }
+            }
+        });
+
+    </script>
+}

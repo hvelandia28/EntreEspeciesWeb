@@ -1,0 +1,252 @@
+﻿<style>
+    .card-header input[type="file"] {
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    /* Estilos personalizados para la barra de búsqueda */
+    #searchInput {
+        width: 300px; /* Ancho más pequeño */
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    #searchButton {
+        margin-left: 10px; /* Espacio a la izquierda */
+    }
+
+    .shadow-sm {
+        box-shadow: 0 2px 4px #675855;
+        ; /* Añade sombreado gris */
+    }
+
+    .default-image {
+        width: 100%; /* Ancho completo */
+        height: 200px; /* Mismo alto que la imagen de la tarjeta */
+        object-fit: cover; /* Ajusta la imagen para cubrir todo el espacio */
+    }
+
+    .card-img-top {
+        width: 100%; /* Ancho completo de la tarjeta */
+        height: 200px; /* Altura deseada para la imagen de la tarjeta */
+        object-fit: cover; /* Ajusta la imagen para cubrir todo el espacio asignado */
+    }
+
+    .button-and-availability-container {
+        display: flex;
+        margin-left: 20px;
+    }
+
+    .availability {
+        margin-left: 20px; /* Ajusta el margen izquierdo según sea necesario */
+        margin-top: 5px;
+    }
+
+</style>
+
+
+@model IEnumerable<EntreEspeciesNuevo.Models.Producto>
+
+@{
+
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    var RegistrarProductos = ViewBag.RegistrarProductos;
+    var ActualizarProductos = ViewBag.ActualizarProductos;
+    var CambioEstadoProductos = ViewBag.CambioEstadoProductos;
+    var VerProductos = ViewBag.VerProductos;
+
+}
+@if(VerProductos){
+<head>
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-switch@3.3.4/dist/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anta&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+
+<h1>Productos</h1>
+<br>
+<br>
+
+<div class="container">
+    <div class="row mb-3 justify-content-between">
+        <!-- Botón "AGREGAR PRODUCTO" a la izquierda -->
+        <div class="col">
+            @if (RegistrarProductos)
+            {
+                <a class="btn btn-primary" asp-action="Create">Agregar Producto</a>
+            }
+        </div>
+        <div class="col-auto ml-3 align-self-center">
+            <div class="input-group">
+                <label for="searchInput" class="sr-only">Buscar:</label>
+                <input style="border-radius: 5px;" type="text" id="searchInput" class="form-control ms-2 bg-white shadow-sm">
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<br>
+
+<div class="row">
+    @foreach (var producto in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-lg">
+                <div class="card-header">
+                    <!-- Formulario para cambiar la imagen -->
+                    <form class="form-cambiar-imagen" data-producto-id="@producto.IdProducto" style="display: none;" enctype="multipart/form-data" action="@Url.Action("CambiarImagen", "Productoes", new { id = producto.IdProducto })" method="post">
+                        <input class="mb-2" type="file" name="nuevaImagen" accept="image/*" class="custom-file-input" title="Selecciona una imagen...">
+                        <br>
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-primary btn">Guardar</button>
+                        </div>
+                    </form>
+                    <button type="button" class="btn btn-dark btn-cambiar-imagen" data-producto-id="@producto.IdProducto">Cambiar Imagen</button>
+                </div>
+
+                <div class="card-body">
+                    @if (producto.Foto != null)
+                    {
+                        <img src="data:image/jpeg;base64,@(Convert.ToBase64String(producto.Foto))" class="card-img" alt="Imagen">
+                    }
+                    else
+                    {
+                        <img src="~/images/por_defecto.png" class="default-image" class="card-img-top" alt="Ejemplo de imagen">
+                    }
+                    <br>
+
+                    <br>
+                    <h5 class="card-title"><strong>@Html.DisplayFor(modelItem => producto.NomProducto)</strong></h5>
+                    <br>
+                    <p class="card-text"><b>Cantidad:</b> @Html.DisplayFor(modelItem => producto.Cantidad)</p>
+                    <p class="card-text"><b>Precio:</b> @Html.Raw(string.Format(new System.Globalization.CultureInfo("es-AR"), "{0:C}", producto.Precio))</p>
+                    <p class="card-text"><b>Categoría:</b> @Html.DisplayFor(modelItem => producto.IdCategoriaNavigation.NomCategoria)</p>
+                    <p class="card-text"><b>Fecha de Vencimiento:</b> @(producto.FechaVen != null ? Html.DisplayFor(modelItem => producto.FechaVen) : "No aplica")</p>
+                    <center>
+                        <div class="button-and-availability-container">
+                            @if (ActualizarProductos)
+                            {
+                                <a href="@Url.Action("Edit", new { id = producto.IdProducto })" class="btn btn-primary btn">Editar</a>
+                            }
+                            <div class="availability">
+                                <b><p class="card-text"> @(producto.Disponibilidad == 1 ? "Disponible" : "No disponible")</p></b>
+                            </div>
+                        </div>
+                    </center>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div class="modal fade" id="detalleModal" tabindex="-1" role="dialog" aria-labelledby="detalleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detalleModalLabel">Detalles de la Categoría</h5>
+            </div>
+            <div class="modal-body">
+                <!-- Aquí puedes mostrar la información detallada de la categoría -->
+                <div id="detalleContent"></div>
+            </div>
+            <div class="modal-footer mt-auto">
+                <button type="button" class="btn btn-secondary" id="closeModalBtn" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+@section Scripts {
+
+    <script>
+
+        $(document).ready(function () {
+            $('.estado-checkbox').change(function () {
+                var idProducto = $(this).data('id');
+                // Hacer la solicitud AJAX para cambiar el estado del producto
+                $.ajax({
+                    url: '/Productoes/CambiarEstadoProducto',
+                    type: 'POST',
+                    data: { idProducto: idProducto },
+                    success: function (response) {
+                        if (response.success) {
+                            // Manejar el éxito según sea necesario
+                            console.log('Estado del producto cambiado con éxito');
+                        } else {
+                            // Manejar el error según sea necesario
+                            console.error('Error al cambiar el estado del producto');
+                        }
+                    },
+                    error: function () {
+                        // Manejar el error según sea necesario
+                        console.error('Error al realizar la solicitud AJAX');
+                    }
+                });
+            });
+        });
+
+
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('searchInput');
+
+            searchInput.addEventListener('input', function () {
+                const searchTerm = searchInput.value.trim().toLowerCase();
+                const productos = document.querySelectorAll('.card');
+
+                productos.forEach(producto => {
+                    const nombre = producto.querySelector('.card-title').innerText.toLowerCase();
+                    const categoria = producto.querySelector('.card-text').innerText.toLowerCase(); // Cambiado a '.card-text'
+
+                    // Restablecer la visibilidad de todos los productos antes de comenzar a filtrar
+                    producto.style.display = 'block';
+
+                    // Ocultar productos que no coinciden con el término de búsqueda
+                    if (!nombre.includes(searchTerm) && !categoria.includes(searchTerm)) {
+                        producto.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+        // Espera a que el DOM esté completamente cargado
+        document.addEventListener('DOMContentLoaded', function () {
+            // Obtener todos los botones de cambiar imagen
+            const btnsCambiarImagen = document.querySelectorAll('.btn-cambiar-imagen');
+
+            // Agregar evento clic a cada botón
+            btnsCambiarImagen.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Obtener el ID del producto asociado al botón
+                    const productId = btn.getAttribute('data-producto-id');
+                    // Mostrar el formulario correspondiente al ID del producto
+                    const form = document.querySelector(`.form-cambiar-imagen[data-producto-id="${productId}"]`);
+                    if (form) {
+                        form.style.display = 'block';
+                    } else {
+                        console.error('Formulario no encontrado para el producto con ID:', productId);
+                    }
+                });
+            });
+        });
+    </script>
+    
+}

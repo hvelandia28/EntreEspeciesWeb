@@ -1,0 +1,160 @@
+﻿
+
+
+@model EntreEspeciesNuevo.Models.Proveedore
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="~/css/form.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-switch@3.3.4/dist/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anta&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card rounded">
+            <div class="card-body">
+                <center> <h4 class="card-title" style="font-family: Arial, sans-serif;">Crear Proveedor</h4></center>
+                <hr />
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group row">
+                    <div class="col"
+                        <label asp-for="NitProveedor" class="control-label">Nit del Proveedor:</label>
+                        <input asp-for="NitProveedor" class="form-control" />
+                        <span asp-validation-for="NitProveedor" class="text-danger"></span>
+                    </div>
+
+                    <div class="col">
+                        <label asp-for="NomProveedor" class="control-label">Razón social:</label>
+                        <input asp-for="NomProveedor" class="form-control" />
+                        <span asp-validation-for="NomProveedor" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Correo" class="control-label">Correo:</label>
+                    <input asp-for="Correo" class="form-control" />
+                    <span asp-validation-for="Correo" class="text-danger"></span>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col"
+                        <label asp-for="Telefono" class="control-label">Teléfono:</label>
+                        <input asp-for="Telefono" class="form-control" />
+                        <span asp-validation-for="Telefono" class="text-danger"></span>
+                    </div>
+
+                    <div class="col">
+                        <label asp-for="Direccion" class="control-label">Dirección:</label>
+                        <input asp-for="Direccion" class="form-control" />
+                        <span asp-validation-for="Direccion" class="text-danger"></span>
+                    </div>
+                </div>
+                    <div class="form-group">
+                        <label asp-for="contacto" class="control-label">Nombre de Contacto:</label>
+                        <input asp-for="contacto" class="form-control" />
+                        <span asp-validation-for="contacto" class="text-danger"></span>
+                    </div>
+            
+                <div class="form-group text-center">
+                    <input type="submit" value="Crear" class="btn btn-primary" />
+                    <button type="button" onclick="window.location.href='@Url.Action("Index")'" class="btn btn-secondary btn-gray">Cancelar</button>
+                </div>
+               
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+
+    }
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.querySelector('form');
+            form.addEventListener('submit', function (event) {
+                let isValid = true;
+
+                // Validar el campo NitProveedor
+                const nitProveedorInput = document.getElementById('NitProveedor');
+                const nitProveedorValue = nitProveedorInput.value.trim();
+                if (nitProveedorValue === '') {
+                    showError('Por favor, ingrese el Nit del proveedor.');
+                    isValid = false;
+                }
+
+                // Validar el campo NomProveedor
+                const nomProveedorInput = document.getElementById('NomProveedor');
+                const nomProveedorValue = nomProveedorInput.value.trim();
+                if (nomProveedorValue === '') {
+                    showError('Por favor, ingrese el Nombre del proveedor.');
+                    isValid = false;
+                }
+
+                // Validar el campo Correo
+                const correoInput = document.getElementById('Correo');
+                const correoValue = correoInput.value.trim();
+                if (correoValue === '') {
+                    showError('Por favor, ingrese el Correo del proveedor.');
+                    isValid = false;
+                }
+
+                // Validar el campo Telefono
+                const telefonoInput = document.getElementById('Telefono');
+                const telefonoValue = telefonoInput.value.trim();
+                if (telefonoValue === '') {
+                    showError('Por favor, ingrese el Teléfono del proveedor.');
+                    isValid = false;
+                }
+                    const contactoInput = document.getElementById('contacto');
+                    const contactoValue = contactoInput.value.trim();
+                    if (contactoValue === '') {
+                        showError('Por favor, ingrese el un contacto.');
+                        isValid = false;
+                    }
+
+
+                // Validar el campo Direccion
+                const direccionInput = document.getElementById('Direccion');
+                const direccionValue = direccionInput.value.trim();
+                if (direccionValue === '') {
+                    showError('Por favor, ingrese la Dirección del proveedor.');
+                    isValid = false;
+                }
+
+                if (!isValid) {
+                    event.preventDefault(); // Evitar el envío del formulario si no es válido
+                }
+                else{
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Éxito',
+                        text: 'El proveedor se ha creado exitosamente.',
+                        timer: 7000
+                    });
+                }
+            });
+
+            function showError(message) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: message
+                });
+            }
+        });
+    </script>
+}

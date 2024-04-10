@@ -1,0 +1,314 @@
+﻿@model EntreEspeciesNuevo.Models.Producto
+
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/form.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-switch@3.3.4/dist/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anta&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card rounded">
+            <div class="card-body">
+                <center> <h4 class="card-title" style="font-family: Arial, sans-serif;">Editar Producto</h4></center>
+                <hr />
+                    <form asp-action="Edit" id="editForm">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="IdProducto" />
+                        <div class="form-group row">
+                            <div class="col">
+                                <label asp-for="IdCategoria" class="control-label">Categoria:</label>
+                                <select asp-for="IdCategoria" class="form-control" asp-items="ViewBag.IdCategoria"></select>
+                                <span asp-validation-for="IdCategoria" class="text-danger"></span>
+                            </div>
+                            <div class="col">
+                                <label asp-for="NomProducto" class="control-label">Nombre:</label>
+                                <input asp-for="NomProducto" class="form-control" />
+                                <span asp-validation-for="NomProducto" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col">
+                                <label asp-for="Disponibilidad" class="control-label">Disponibilidad:</label>
+                                <select asp-for="Disponibilidad" class="form-control">
+                                    <option value="1">Disponible</option>
+                                    <option value="0">No disponible</option>
+                                </select>
+                                <span asp-validation-for="Disponibilidad" class="text-danger"></span>
+                            </div>
+
+                            <div class="col">
+                                <label asp-for="Cantidad" class="control-label">Cantidad:</label>
+                                <input asp-for="Cantidad" class="form-control" type="text" oninput="validarPrecio(event)" />
+                                <span asp-validation-for="Cantidad" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col">
+                                <label asp-for="FechaVen" class="control-label">Fecha de Vencimiento(Opcional):</label>
+                                <input asp-for="FechaVen" class="form-control" type="datetime-local" />
+                                <span asp-validation-for="FechaVen" class="text-danger"></span>
+                            </div>
+                            <div class="col">
+                                <label asp-for="Precio" class="control-label">Precio:</label>
+                                <input asp-for="Precio" class="form-control" type="text" oninput="validarPrecio(event)" />
+                                <span asp-validation-for="Precio" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <center>
+                            <div class="form-group">
+                                <input type="submit" value="Guardar" class="btn btn-primary id="guardarBtn" />
+                                <a asp-controller="Productoes" asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                            </div>
+                        </center>
+                    </form>
+            </div>
+       </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#NomProducto').on('input', function () {
+                var nombre = $(this).val().trim();
+                var idProducto = $('#IdProducto').val(); // Obtener el IdProducto actual
+                if (nombre !== '') {
+                    $.ajax({
+                        url: '@Url.Action("VerificarNombreExistenteEditar", "Productoes")',
+                        type: 'GET',
+                        data: { nuevoNombre: nombre, idProducto: idProducto }, // Pasar el IdProducto al backend
+                        success: function (response) {
+                            if (response.nombreExistente) {
+                                mostrarAlertaError('El producto ya está registrado');
+                                $('#guardarBtn').prop('disabled', true); // Deshabilitar el botón de guardar
+                            } else {
+                                $('#guardarBtn').prop('disabled', false); // Habilitar el botón de guardar si el nombre es único
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(xhr.responseText);
+                        }
+                    });
+                } else {
+                    $('#guardarBtn').prop('disabled', false); // Habilitar el botón de guardar si el campo de nombre está vacío
+                }
+            });
+
+            // Función para mostrar una alerta de error
+            function mostrarAlertaError(mensaje) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: mensaje,
+                });
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            // Validación en tiempo real del campo Nombre del Producto
+            $('#NomProducto').on('input', function () {
+                var nombre = $(this).val().trim();
+                var idProducto = $('#IdProducto').val(); // Obtener el IdProducto actual
+                if (nombre !== '') {
+                    // Realizar la solicitud AJAX para verificar si el nombre existe
+                    $.ajax({
+                        url: '@Url.Action("VerificarNombreExistenteEditar1", "Productoes")',
+                        type: 'GET',
+                        data: { nuevoNombre: nombre, idProducto: idProducto },
+                        success: function (response) {
+                            if (response.nombreExistente) {
+                                mostrarAlertaError('El producto ya está registrado');
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(xhr.responseText);
+                        }
+                    });
+                }
+            });
+
+            // Validar al enviar el formulario
+            $("#editForm").submit(function (event) {
+                event.preventDefault(); // Evitar el envío del formulario
+
+                // Obtener el nombre del producto y el IdProducto actual
+                var nombre = $('#NomProducto').val().trim();
+                var idProducto = $('#IdProducto').val();
+
+                // Realizar la solicitud AJAX para verificar si el nombre existe
+                $.ajax({
+                    url: '@Url.Action("VerificarNombreExistenteEditar1", "Productoes")',
+                    type: 'GET',
+                    data: { nuevoNombre: nombre, idProducto: idProducto },
+                    success: function (response) {
+                        if (response.nombreExistente) {
+                            // Mostrar una alerta si el nombre ya existe
+                            mostrarAlertaError('El producto ya está registrado');
+                        } else {
+                            // Si el nombre no existe, enviar el formulario
+                            $("#editForm").unbind('submit').submit();
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+
+            // Función para mostrar una alerta de error
+            function mostrarAlertaError(mensaje) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: mensaje,
+                });
+            }
+        });
+
+    </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+
+        $(document).ready(function () {
+            // Manejar clic en el botón Guardar
+            $("#guardarBtn").click(function () {
+                enviarFormulario();
+            });
+
+            // Función para enviar el formulario
+            function enviarFormulario() {
+                // Realizar todas las validaciones de los campos
+                if (!$("#editForm").valid()) {
+                    // Si alguna validación falla, retornar false para evitar el envío del formulario
+                    return false;
+                }
+                // Si el documento es válido, se procede a validar los demás campos
+                if (!validarCampo('NomProducto', 'Debe Ingresar Un Nombre')) return false;
+                if (!validarCampo('Cantidad', 'Debe Ingresar Una cantidad')) return false;
+                if (!validarCampo('Precio', 'Debe Ingresar Un precio')) return false;
+
+                // Realiza la solicitud AJAX para enviar el formulario
+                $.ajax({
+                    url: $("#editForm").attr("action"),
+                    type: $("#editForm").attr("method"),
+                    data: $("#editForm").serialize(),
+                    success: function (response) {
+                        // Muestra la alerta de éxito
+                        mostrarAlerta();
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.error('Error en la solicitud AJAX:', textStatus, errorThrown);
+                    }
+                });
+            }
+
+            // Función para validar los campos
+            function validarCampo(nombreCampo, mensaje) {
+                if ($("[name='" + nombreCampo + "']").val().trim().length < 1) {
+                    mostrarAlertaWarning(mensaje);
+                    return false;
+                }
+                return true;
+            }
+
+            // Función para mostrar una alerta de advertencia
+            function mostrarAlertaWarning(mensaje) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Por Favor Llene Los Campos',
+                    text: mensaje,
+                    footer: 'Sistema de Información'
+                });
+            }
+
+            // Función para mostrar una alerta de éxito
+            function mostrarAlerta() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Actualización Exitosa',
+                    text: 'El Producto se actualizó correctamente.',
+                    footer: 'Sistema de Información',
+                    showConfirmButton: false
+                });
+
+                setTimeout(function () {
+                    window.location.href = '@Url.Action("Index", "Productoes")';
+                }, 3000);
+            }
+
+            // Validación en tiempo real del campo Cantidad
+            $('#Cantidad').on('input', function (event) {
+                const inputValue = event.target.value;
+                if (isNaN(inputValue)) {
+                    event.target.value = inputValue.replace(/[^\d]/g, '');
+                    mostrarAlertaError('Solo se permite ingresar números');
+                }
+            });
+
+            // Validación en tiempo real del campo Precio
+            $('#Precio').on('input', function (event) {
+                const inputValue = event.target.value;
+                if (isNaN(inputValue)) {
+                    event.target.value = inputValue.replace(/[^\d]/g, '');
+                    mostrarAlertaError('Solo se permite ingresar números');
+                }
+            });
+
+            // Función para mostrar una alerta de error
+            function mostrarAlertaError(mensaje) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: mensaje,
+                });
+            }
+        });
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#FechaVen').change(function () {
+                // Verificar si la fecha es actual o pasada
+                var fechaVen = $(this).val();
+                var selectedDate = new Date(fechaVen);
+                var currentDate = new Date();
+
+                if (selectedDate <= currentDate) {
+                    showAlert("Fecha Incorrecta", "No se puede seleccionar una fecha actual o pasada.", "error", "Ok");
+                    $(this).val(''); // Limpiar el campo de fecha
+                }
+            });
+
+            function showAlert(title, message, icon, buttonLabel) {
+                Swal.fire({
+                    title: title,
+                    text: message,
+                    icon: icon,
+                    confirmButtonText: buttonLabel,
+                    footer: 'Sistema de Información'
+                });
+            }
+        });
+    </script>
+
+}

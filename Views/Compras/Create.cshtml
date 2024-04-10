@@ -1,0 +1,514 @@
+﻿@model EntreEspeciesNuevo.Models.CompraViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="~/css/veco.css" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+</head>
+<style>
+
+    #IdCliente + .select2-container {
+        border: 1px solid #ffffff; /* Borde sombreado de color gris */
+        border-radius: 10px; /* Esquinas redondeadas */
+        padding: 5px; /* Ajustar el relleno según sea necesario */
+        background-color: #ffffff; /* Fondo blanco */
+    }
+
+</style>
+
+
+<div class="container">
+    <h1>Compra</h1>
+    <hr />
+    <form asp-action="Create" id="mainPurchaseForm">
+        <p>Fecha: @DateTime.Now.ToString("dd/MM/yyyy")</p>
+        @for (int i = 0; i < Model.Compras.Count; i++)
+        {
+            @for (int j = 0; j < Model.DetaCompras.Count; j++)
+            {
+                <div class="row">
+                    <!-- Columna izquierda -->
+                    <div class="col-md-4">
+                        <!-- Campos de compra -->
+                        <div class="form-group">
+                            <label asp-for="Compras[i].FormaPago" class="control-label">Forma de Pago:</label>
+                            <select asp-for="Compras[i].FormaPago" class="form-control">
+                                <option value="">Seleccione la forma de pago</option>
+                                <option value="Efectivo">Efectivo</option>
+                                <option value="Tarjetas de débito y crédito">Tarjetas de débito y crédito</option>
+                                <option value="Transferencias bancarias">Transferencias bancarias</option>
+                                <option value="Cheques">Cheques</option>
+                            </select>
+                            <span asp-validation-for="Compras[i].FormaPago" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="Compras[i].IdProveedor" class="control-label">Proveedor:</label>
+                            <select asp-for="Compras[i].IdProveedor" class="form-control" asp-items="ViewBag.IdProveedor">
+                                <option value="">Seleccione un Proveedor</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="boton" class="col-md-4">
+                        <h9>Agregar producto</h9>
+                        <button type="button" class="btn btn-success rounded-circle position-relative" onclick="mostrarCamposProducto()" style="background-color: blue;">
+                            <span class="fi fi-rr-plus"></span>
+                            <span class="position-absolute top-50 start-50 translate-middle text-white" style="display: none;">Agregar Producto</span>
+                        </button>
+                    </div>
+
+
+                </div>
+                <div id="camposProducto" style="display:none;">
+                    <div class="row">
+                        <!-- Columna derecha -->
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="Compras[i].IdCategoria" class="control-label">Categoria:</label>
+                                <select id="IdCategoria" asp-for="Compras[i].IdCategoria" class="form-control" asp-items="ViewBag.IdCategoria">
+                                    <option value="">Seleccione una Categoria</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <!-- Detalles de Compra -->
+
+                            <div class="form-group">
+                                <input type="hidden" asp-for="DetaCompras[j].IdCompra" value="@Model.Compras[0].IdCompra" />
+
+                                <label asp-for="DetaCompras[j].IdProducto" class="control-label">Producto</label><br>
+                                <select id="IdProducto" asp-for="DetaCompras[j].IdProducto" class="form-control">
+                                    <option value="">Seleccione un Producto</option>
+                                </select>
+                                <span id="productoSeleccionadoNombre"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+
+                            <div class="form-group">
+                                <label asp-for="DetaCompras[j].Cantidad" class="control-label">Cantidad:</label>
+                                <input id="Canti" asp-for="DetaCompras[j].Cantidad" class="form-control" type="number" oninput="validarNumero(this)" />
+                                <span asp-validation-for="DetaCompras[j].Cantidad" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+
+                            <div class="form-group">
+                                <label asp-for="DetaCompras[j].PrecioCompra" class="control-label">Precio de la Compra:</label>
+                                <input id="SubPro" asp-for="DetaCompras[j].PrecioCompra" class="form-control" type="number" oninput="validarNumero(this)" />
+                                <span asp-validation-for="DetaCompras[j].PrecioCompra" class="text-danger"></span>
+                            </div>
+
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <!-- Botón para agregar detalles -->
+                                <button type="button" class="btn btn-primary" onclick="agregarDetalle(0)">Agregar</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+        }
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <li>Debes agregar un producto</li>
+                    }
+                </ul>
+            </div>
+        }
+
+        <!-- Agrega este campo oculto dentro de tu formulario -->
+        <div class="table-container">
+            <input type="hidden" id="DetallesTemporales" name="DetallesTemporales" />
+            <div id="listaDetallesCompra">
+            </div>
+            <div id="totalSection" style="display:none;">
+                <h5>Total: $<span id="totalAmount">0.00</span></h5>
+            </div>
+
+        </div>
+        <div class="form-group text-center">
+            <button type="submit" class="btn btn-primary">Crear Compra</button>
+        </div>
+    </form>
+    <!-- Lista de Detalles de Compra -->
+</div>
+
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/i18n/es.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Actualiza la inicialización de select2 para apuntar a #IdProducto
+            $('#IdProducto').select2({
+                language: "es",
+                minimumInputLength: 1,
+                minimumResultsForSearch: 0,
+            });
+            // Evento cuando cambia la categoría
+            $("#IdCategoria").change(function () {
+                var idCategoriaSeleccionada = $(this).val();
+
+                // Realizar la solicitud AJAX para obtener productos por categoría
+                $.get("/Compras/ObtenerProductosPorCategoria", { idCategoria: idCategoriaSeleccionada }, function (data) {
+                    // Limpiar y actualizar la lista de productos
+                    var selectProducto = $("#IdProducto");
+                    selectProducto.empty();
+                    // Agregar la opción "Seleccione un Producto" al principio
+                    selectProducto.append($('<option>', {
+                        value: '',
+                        text: 'Seleccione un Producto'
+                    }));
+
+                    // Agregar opciones basadas en los datos recibidos
+                    $.each(data, function (index, item) {
+                        selectProducto.append($('<option>', {
+                            value: item.idProducto,
+                            text: item.nomProducto
+                        }));
+                    });
+                });
+            });
+        });
+        $("#mainPurchaseForm").submit(function () {
+            // Obtener el valor del campo de forma de pago
+            var formaPago = $("select[name='Compras[0].FormaPago']").val();
+            var proveedor = $("select[name='Compras[0].IdProveedor']").val();
+            var producto = $("#IdProducto").val();
+            var cantidad = $("#Canti").val();
+            var precio = $("#SubPro").val();
+
+            // Verificar si el campo de forma de pago está vacío
+            if (formaPago === "" || proveedor === "" || detallesTemporales.length === 0 /* &&  (producto === "" || (producto!= "" &&  cantidad === "" ) || (producto!="" && precio === "")) */) {
+                // Mostrar alerta con SweetAlert
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Completa',
+                    text: 'Ingresa un proveedor, forma de pago, producto, la cantidad y el precio .',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+
+                return false; // Detener el envío del formulario
+            }
+            if (producto != "" && cantidad != "" && precio != "") {
+                agregarDetalle(0);
+            }
+
+            // Resto de la lógica para enviar el formulario si la forma de pago no está vacía
+            return true;
+        });
+        function mostrarCamposProducto() {
+            $("#camposProducto").show();
+            $("#boton").hide();
+        }
+
+        function validarNumero(input) {
+            // Elimina caracteres no numéricos y asegura que el valor sea un número
+            input.value = input.value.replace(/\D/g, '');
+
+            // Elimina ceros iniciales si el primer dígito es cero
+            if (input.value.charAt(0) === '0') {
+                input.value = input.value.slice(1);
+            }
+        }
+
+        var detallesTemporales = [];
+
+        // Función para obtener el nombre del producto seleccionado
+        function obtenerNombreProductoSeleccionado(idProducto) {
+            var productos = @Html.Raw(Json.Serialize(ViewBag.ProductosConDisponibilidad));
+            var nombreProducto = productos.find(p => p.value === idProducto)?.text;
+            return nombreProducto || '';
+        }
+
+        function agregarDetalle(j) {
+            console.log("Haciendo clic en agregarDetalle()");
+            // Verificar si la tabla de detalles está vacía
+
+            var idProducto = $("#IdProducto").val();
+            var nombreProducto = obtenerNombreProductoSeleccionado(idProducto);
+            // Verificar si el producto ya está en detallesTemporales
+            var productoExistente = detallesTemporales.find(detalle => detalle.IdProducto === idProducto);
+
+            if (productoExistente) {
+                // Mostrar alerta indicando que el producto ya fue agregado
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Producto Existente',
+                    text: 'Este producto ya ha sido agregado a los detalles temporales.',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+                return;
+            }
+
+            var detalleCompra = {
+                IdProducto: idProducto,
+                Cantidad: $("#Canti").val(),
+                PrecioCompra: $("#SubPro").val(),
+                NombreProducto: nombreProducto
+            };
+            if (detalleCompra.IdProducto === "" || detalleCompra.Cantidad === "" || detalleCompra.PrecioCompra === "") {
+                // Mostrar alerta con SweetAlert
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Campos Vacíos',
+                    text: 'Debes completar todos los campos antes de agregar detalles.',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+
+                return; // Detener la ejecución si hay campos vacíos
+            }
+
+            detallesTemporales.push(detalleCompra);
+
+            // Limpiar campos de categoría y producto
+            $("#IdCategoria").val(""); // Campo de categoría
+            $("#IdProducto").val("").trigger('change'); // Campo de producto
+            $("#Canti").val("");
+            $("#SubPro").val("");
+
+            // Actualizar el campo oculto con los detalles temporales
+            $("#DetallesTemporales").val(JSON.stringify(detallesTemporales));
+
+            // Limpiar la lista visual y agregar los detalles temporales
+            var listaDetallesCompra = $("#listaDetallesCompra");
+            listaDetallesCompra.empty();
+            if (detallesTemporales.length > 0) {
+                var table = $("<table>").addClass("table");
+                var thead = $("<thead>").append("<tr><th>Producto</th><th>Cantidad</th><th>Precio</th><th>Acciones</th></tr>");
+                var tbody = $("<tbody>");
+
+                for (var i = 0; i < detallesTemporales.length; i++) {
+                    var detalle = detallesTemporales[i];
+
+                    var row = $("<tr>");
+                    row.append("<td>" + (detalle.NombreProducto) + "</td>");
+                    row.append("<td><input type='number' class='form-control cantidad-input' value='" + detalle.Cantidad + "' oninput='validarNumero(this)'></td>");
+                    row.append("<td><input type='text' class='form-control preciocompra' value='" + detalle.PrecioCompra + "' oninput='validarNumero(this)'></td>");
+
+                    // Agregar botones de Editar y Eliminar
+                    var editarButton = $("<button>").text("Editar").addClass("btn btn-warning btn-sm").attr("data-index", i);
+                    var eliminarButton = $("<button>").text("Eliminar").addClass("btn btn-danger btn-sm").attr("data-index", i);
+                    var accionesCell = $("<td>").append(eliminarButton);
+
+                    row.append(accionesCell);
+                    tbody.append(row);
+                }
+
+                table.append(thead).append(tbody);
+                listaDetallesCompra.append(table);
+
+                // Ocultar camposProducto después de agregar detalles
+                $("#camposProducto").hide();
+                $("#boton").show();
+                calcularTotal();
+
+            } else {
+                listaDetallesCompra.append("<p>No hay detalles agregados</p>");
+                $("#totalSection").hide();
+            }
+            // Agregar eventos click para los botones de Editar y Eliminar
+
+            $(".btn-danger").on("click", function () {
+                var index = $(this).data("index");
+                eliminarDetalle(index);
+            });
+            // Agregar eventos change para los inputs de cantidad en la tabla temporal
+            $(document).on("change", ".preciocompra", function () {
+                // Almacenar una referencia al elemento actual
+                var inputPrecio = $(this);
+
+                // Obtener el índice de la fila
+                var index = inputPrecio.closest("tr").index();
+
+                // Obtener el detalle correspondiente al índice
+                var detalle = detallesTemporales[index];
+
+                // Obtener el precio anterior
+                var precioAnterior = detalle.PrecioCompra;
+
+                // Obtener el nuevo precio ingresado
+                var nuevoPrecio = parseFloat(inputPrecio.val());
+
+                // Validar el nuevo precio
+                if (!isNaN(nuevoPrecio)) {
+                    if (nuevoPrecio <= 0) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Precio incorrecto',
+                            text: 'El precio debe ser mayor que cero.',
+                        });
+
+                        // Restaurar el precio anterior
+                        inputPrecio.val(precioAnterior);
+                    } else {
+                        // Actualizar el precio en el detalle temporal
+                        detalle.PrecioCompra = nuevoPrecio;
+
+                        // Actualizar el campo oculto con los detalles temporales
+                        $("#DetallesTemporales").val(JSON.stringify(detallesTemporales));
+
+                        // Calcular el nuevo total
+                        calcularTotal();
+                    }
+                } else {
+                    // Mostrar un mensaje de error si el valor ingresado no es válido
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Precio incorrecto',
+                        text: 'Por favor, ingrese un precio válido.',
+                    });
+
+                    // Restaurar el precio anterior
+                    inputPrecio.val(precioAnterior);
+                }
+            });
+            // Agregar eventos change para los inputs de cantidad en la tabla temporal
+            $(document).on("change", ".cantidad-input", function () {
+                // Almacenar una referencia al elemento actual
+                var inputCantidad = $(this);
+
+                // Obtener el índice de la fila
+                var index = inputCantidad.closest("tr").index();
+
+                // Obtener el detalle correspondiente al índice
+                var detalle = detallesTemporales[index];
+
+                // Obtener la cantidad anterior
+                var cantidadAnterior = detalle.Cantidad;
+
+                // Obtener la nueva cantidad ingresada
+                var nuevaCantidad = parseFloat(inputCantidad.val());
+
+                // Validar la nueva cantidad
+                if (!isNaN(nuevaCantidad)) {
+                    if (nuevaCantidad <= 0) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Cantidad incorrecta',
+                            text: 'La cantidad debe ser mayor que cero.',
+                        });
+
+                        // Restaurar la cantidad anterior
+                        inputCantidad.val(cantidadAnterior);
+                    } else {
+                        // Actualizar la cantidad en el detalle temporal
+                        detalle.Cantidad = nuevaCantidad;
+
+                        // Actualizar el campo oculto con los detalles temporales
+                        $("#DetallesTemporales").val(JSON.stringify(detallesTemporales));
+
+                        // Calcular el nuevo total
+                        calcularTotal();
+                    }
+                } else {
+                    // Mostrar un mensaje de error si el valor ingresado no es válido
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Cantidad incorrecta',
+                        text: 'Por favor, ingrese una cantidad válida.',
+                    });
+
+                    // Restaurar la cantidad anterior
+                    inputCantidad.val(cantidadAnterior);
+                }
+            });
+            function eliminarDetalle(index) {
+                detallesTemporales.splice(index, 1);
+                // Actualizar el campo oculto con los detalles temporales
+                $("#DetallesTemporales").val(JSON.stringify(detallesTemporales));
+                // Volver a renderizar la lista de detalles
+                renderizarDetalles();
+                calcularTotal();
+            }
+            function renderizarDetalles() {
+                var listaDetallesCompra = $("#listaDetallesCompra");
+                listaDetallesCompra.empty();
+
+                if (detallesTemporales.length > 0) {
+                    var table = $("<table>").addClass("table");
+                    var thead = $("<thead>").append("<tr><th>Producto</th><th>Cantidad</th><th>Precio</th><th>Acciones</th></tr>");
+                    var tbody = $("<tbody>");
+
+                    for (var i = 0; i < detallesTemporales.length; i++) {
+                        var detalle = detallesTemporales[i];
+
+                        var row = $("<tr>");
+                        row.append("<td>" + (detalle.NombreProducto) + "</td>");
+                        // Hacer la cantidad y el precio editables
+                        row.append("<td><input type='number' class='form-control' value='" + detalle.Cantidad + "' oninput='validarNumero(this)'></td>");
+                        row.append("<td><input type='text' class='form-control' value='" + detalle.PrecioCompra + "' oninput='validarNumero(this)'></td>");
+
+                        // Agregar botones de Editar y Eliminar
+                        var eliminarButton = $("<button>").text("Eliminar").addClass("btn btn-danger btn-sm").attr("data-index", i);
+                        var accionesCell = $("<td>").append(eliminarButton);
+
+                        row.append(accionesCell);
+                        tbody.append(row);
+                    }
+
+                    table.append(thead).append(tbody);
+                    listaDetallesCompra.append(table);
+
+                    // Agregar eventos click para los botones de Editar y Eliminar
+
+                    $(".btn-danger").on("click", function () {
+                        var index = $(this).data("index");
+                        eliminarDetalle(index);
+                    });
+                } else {
+                    listaDetallesCompra.append("<p>No hay detalles agregados</p>");
+                }
+            }
+            function calcularTotal() {
+                // Verificar si detallesTemporales está vacío
+                if (detallesTemporales.length === 0) {
+                    // Ocultar la sección total cuando no hay detalles
+                    $("#totalSection").hide();
+                    return; // Salir de la función si no hay detalles
+                }
+                // Mostrar la sección del total después de agregar un detalle
+                $("#totalSection").show();
+                var total = 0;
+                for (var i = 0; i < detallesTemporales.length; i++) {
+                    total += parseFloat(detallesTemporales[i].PrecioCompra) || 0;
+                }
+
+                // Mostrar el total actualizado
+                $("#totalAmount").text(total.toFixed(2));
+            }
+        }
+
+        // Actualizar el nombre del producto seleccionado cuando cambia la selección
+        $("#DetaCompras_" + j + "__IdProducto").change(function () {
+            var idProductoSeleccionado = $(this).val();
+            var nombreProductoSeleccionado = obtenerNombreProductoSeleccionado(idProductoSeleccionado);
+            $("#productoSeleccionadoNombre").text("Producto Seleccionado: " + nombreProductoSeleccionado);
+        });
+    </script>
+
+}

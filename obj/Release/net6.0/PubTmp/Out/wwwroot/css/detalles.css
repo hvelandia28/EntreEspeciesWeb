@@ -1,0 +1,67 @@
+body {
+    display: flex;
+    background: url('/images/logipa.png') no-repeat fixed;
+    background-size: cover;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
+
+/* Estilos para el contenedor del menú */
+.menu-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 200px; /* Amplié el ancho del menú para más espacio */
+    background-color: #ffffff;
+    border-right: 3px solid #007bff; /* Borde más grueso */
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    transition: width 0.3s;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Mayor difuminación y sombra */
+    z-index: 1000;
+}
+
+/* Estilos para el contenedor principal */
+.main-container {
+    margin-left: 120px; /* Ajuste de margen izquierdo */
+    margin-right: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Centra el contenido horizontalmente */
+}
+
+/* Estilos para el detalle */
+.detail-container {
+    margin-top: 20px; /* Espacio superior */
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px; /* Bordes más redondeados */
+    box-shadow: 0 0 15px blue; /* Sombra suave */
+}
+
+/* Estilos para dt y dd */
+dt {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 5px;
+    color: #02218E; /* Color azul */
+}
+
+dd {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+/* Estilo para el h1 */
+h1 {
+    font-weight: bold;
+    font-size: 24px; /* Tamaño de fuente aumentado */
+    color: #02218E; /* Color azul */
+}

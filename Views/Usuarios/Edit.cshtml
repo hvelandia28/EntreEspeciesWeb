@@ -1,0 +1,102 @@
+﻿@model EntreEspeciesNuevo.Models.Usuario
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="~/css/form.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-switch@3.3.4/dist/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anta&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+
+
+
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card rounded">
+            <div class="card-body">
+                <center> <h4 class="card-title" style="font-family: Arial, sans-serif;">Editar Usuario</h4></center>
+                <hr />
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="IdUsuario" />
+                    <input type="hidden" asp-for="Contraseña" />
+                    <div class="form-group">
+                        <label asp-for="IdRol" class="control-label">Nombre Del Rol:</label>
+                        <select asp-for="IdRol" class="form-control" asp-items="ViewBag.IdRol"></select>
+                        <span asp-validation-for="IdRol" class="text-danger"></span>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col"
+                                <label asp-for="TipoDoc" class="control-label">Tipo De Documento:</label>
+                                <select asp-for="TipoDoc" class="form-control">
+                                    <option value="C.C">C.C</option>
+                                    <option value="T.I">T.I</option>
+                                    <option value="C.E">C.E</option>
+                                </select>
+                                <span asp-validation-for="TipoDoc" class="text-danger"></span>
+                            </div>
+                        <div class="col">
+                            <label asp-for="Documento" class="control-label">N° Documento:</label>
+                            <input asp-for="Documento" class="form-control" readonly />
+                            <span asp-validation-for="Documento" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col"
+                                <label asp-for="Nombre" class="control-label">Nombre y Apellido</label>
+                                <input asp-for="Nombre" class="form-control"  readonly />
+                                <span asp-validation-for="Nombre" class="text-danger"></span>
+
+                            </div>
+                        <div class="col">
+                            <label asp-for="Telefono" class="control-label">Teléfono:</label>
+                            <input asp-for="Telefono" class="form-control" />
+                            <span asp-validation-for="Telefono" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Correo" class="control-label">Correo:</label>
+                        <input asp-for="Correo" class="form-control" />
+                        <span asp-validation-for="Correo" class="text-danger"></span>
+                    </div>
+                    @* <div class="form-group">
+                        <label asp-for="Contraseña" class="control-label"></label>
+                        <input asp-for="Contraseña" placeholder="Este campo no se puede editar" class="form-control" type="password" readonly />
+                        <span asp-validation-for="Contraseña" class="text-danger"></span>
+                    </div> *@
+                    <div class="form-group row">
+                        <div class="col"
+                                <label asp-for="Estado" class="control-label">Estado:</label>
+                                <select asp-for="Estado" class="form-control">
+                                    <option value="Activo" selected="@(Model.Estado == "True" ? "selected" : null)">Activo</option>
+                                    <option value="Inactivo" selected="@(Model.Estado == "False" ? "selected" : null)">Inactivo</option>
+                                </select>
+                                <span asp-validation-for="Estado" class="text-danger"></span>
+
+                            </div>
+                        <div class="col">
+                            <label asp-for="Direccion" class="control-label">Dirección:</label>
+                            <input asp-for="Direccion" class="form-control" />
+                            <span asp-validation-for="Direccion" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <center>
+                        <div class="form-group">
+                            <input type="submit" value="Guardar" class="btn btn-primary" />
+                            <button type="button" onclick="window.location.href='@Url.Action("Index")'" class="btn btn-secondary btn-gray">Cancelar</button>
+                        </div>
+
+                    </center>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+

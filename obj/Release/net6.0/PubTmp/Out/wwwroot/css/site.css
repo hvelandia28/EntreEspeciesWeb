@@ -1,0 +1,82 @@
+body {
+    display: flex;
+    background: url('/images/logipa.png') no-repeat fixed;
+    background-size: cover;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
+
+.menu-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 200px; /* Amplié el ancho del menú para más espacio */
+    background-color: #ffffff;
+    border-right: 3px solid #007bff; /* Borde más grueso */
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    transition: width 0.3s;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Mayor difuminación y sombra */
+    z-index: 1000;
+}
+
+.main-container {
+    margin-left: 220px;
+    margin-right: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.table-container {
+    margin: 20px; /* Mayor margen alrededor de la tabla */
+    padding: 20px; /* Mayor espacio interior en la tabla */
+    background-color: #F6F6F6; /* Mayor opacidad para un fondo más claro */
+    border: 2px solid #000000;
+    border-radius: 10px; /* Bordes más redondeados */
+    box-shadow: 0 0 25px blue; /* Mayor difuminación y sombra */
+}
+    .table-container a.btn {
+        margin-right: 20px; /* Aumenté el espacio entre botones */
+        color: #ffffff; /* Color del botón en azul */
+        display: inline-block; /* Cambié la propiedad display para mostrar los botones en línea */
+    }
+
+    .table-container table {
+        width: 90%; /* Reduje el ancho de la tabla */
+        border-collapse: collapse;
+        margin-top: 40px; /* Mayor espacio entre la tabla y otros elementos */
+    }
+
+    .table-container th, .table-container td {
+        padding: 25px; /* Mayor espacio alrededor del contenido de la celda */
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .table-container thead th {
+        background-color: #D8EBFF; /* Un tono más claro para el encabezado de la tabla */
+    }
+
+    .table-container tbody tr:hover {
+        background-color: #f0f0f0; /* Color más claro al pasar el ratón */
+    }
+
+.dataTables_wrapper {
+    margin-top: 50px; /* Mayor separación desde la parte superior */
+}
+
+.dataTables_length, .dataTables_filter {
+    margin-bottom: 30px; /* Mayor espacio en la parte inferior */
+}
+.card-body {
+    margin: 20px; /* Mayor margen alrededor de la tabla */
+    padding: 20px; /* Mayor espacio interior en la tabla */
+    background-color: #F6F6F6; /* Mayor opacidad para un fondo más claro */
+    border: 2px solid #000000;
+    border-radius: 10px; /* Bordes más redondeados */
+    box-shadow: 0 0 25px blue;
+}

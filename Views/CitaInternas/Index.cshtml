@@ -1,0 +1,342 @@
+﻿@model IEnumerable<EntreEspeciesNuevo.models.CitaInterna>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    var RegistrarCitasInternas = ViewBag.RegistrarCitasInternas;
+    var ActualizarCitasInternas = ViewBag.ActualizarCitasInternas;
+    var EliminarCitasInternas = ViewBag.EliminarCitasInternas;
+    var CambioEstadoCitas = ViewBag.CambioEstadoCitas;
+    var VerCitas = ViewBag.VerCitas;
+}
+@if (VerCitas)
+{
+    <head>
+        <link rel="stylesheet" href="~/css/site.css" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-switch@3.3.4/dist/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Anta&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    </head>
+
+    @if (RegistrarCitasInternas)
+    {
+        <div class="d-flex justify-content-between align-items-center">
+            <h1>Citas</h1>
+            <p>
+                <a class="btn btn-primary" asp-action="Create" style="margin-right: 20px;">Crear Cita</a>
+            </p>
+        </div>
+    }
+    <div class="table-container">
+        <table id="prueba" class="table">
+            <thead>
+                <tr>
+                    @*             <th>
+                Documento del Cliente
+                </th> *@
+                    <th>
+                        Cliente
+                    </th>
+                    <th>
+                        Mascota
+                    </th>
+                    <th>
+                        Servicio
+                    </th>
+                    <th>
+                        Fecha y Hora
+                    </th>
+                    @* <th>
+                Precio
+                </th> *@
+                    <th>
+                        Estado
+                    </th>
+                    <th>
+                        Acciones
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        @*                 <td>
+                @Html.DisplayFor(modelItem => item.DocumentoClienteNavigation.DocumentoCliente)
+                </td> *@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DocumentoClienteNavigation.NombreCliente)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IdMascotaNavigation.NombreMascota)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IdServicioNavigation.NomServico)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FechaHora)
+                        </td>
+                        @*   <td>
+                @Html.Raw(string.Format(new System.Globalization.CultureInfo("es-AR"), "{0:C}", item.Precio))
+                </td> *@
+                        @*<td>
+                @Html.DisplayFor(modelItem => item.Precio)
+                </td> *@
+                        @*   <td>
+                @Html.DisplayFor(modelItem => item.Estado)
+
+                @if (CambioEstadoCitas)
+                {
+                <input type="checkbox" class="estado-checkbox" data-id="@item.IdCitaInt" data-size="mini" @(item.Estado == "Pendiente" ? "checked" : "") />
+                }
+                </td> *@
+                        @*  <td>
+                @if (CambioEstadoCitas)
+                {
+                <select class="estado-select" data-id="@item.IdCitaInt" data-estado="@item.Estado">
+                <option value="Pendiente">Pendiente</option>
+                <option value="Realizada">Realizada</option>
+                </select>
+                }
+                else
+                {
+                @Html.DisplayFor(modelItem => item.Estado)
+                }
+                </td> *@
+
+
+                        <td>
+                            @if (ViewBag.CambioEstadoCitas)
+                            {
+                                <select class="estado-select" data-id="@item.IdCitaInt" data-estado="@item.Estado">
+                                    @if (item.Estado == "Pendiente")
+                                    {
+                                        <option value="Pendiente" selected>Pendiente</option>
+                                        <option value="Realizada">Realizada</option>
+                                        <option value="Cancelada">Cancelada</option>
+                                        @* <option value="Incumplida">Incumplida</option> *@
+                                    }
+                                    else if (item.Estado == "Realizada")
+                                    {
+
+                                        <option value="Realizada" selected>Realizada</option>
+
+                                    }
+                                    else if (item.Estado == "Cancelada")
+                                    {
+
+                                        <option value="Cancelada" selected>Cancelada</option>
+
+                                    }
+                                    else
+                                    {
+
+                                        <option value="Incumplida" selected>Incumplida</option>
+                                    }
+                                </select>
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(modelItem => item.Estado)
+                            }
+                        </td>
+
+
+
+                        @* <td>
+                @if (CambioEstadoCitas)
+                {
+                <select class="estado-select" data-id="@item.IdCitaInt" data-estado="@item.Estado">
+                @if (item.Estado == "Pendiente")
+                {
+                <option value="Pendiente" selected>Pendiente</option>
+                <option value="Realizada">Realizada</option>
+                }
+                else
+                {
+                <option value="Realizada">Realizada</option>
+                }
+                </select>
+                }
+                else
+                {
+                @Html.DisplayFor(modelItem => item.Estado)
+                }
+                </td> *@
+
+
+
+                        <td>
+                            @if (ActualizarCitasInternas)
+                            {
+                                if (item.Estado != "Realizada" && item.Estado != "Incumplida" && item.Estado != "Cancelada")
+                                {
+                                    <a class="btn btn-primary btn-sm editar-cita-btn" asp-action="Edit" asp-route-id="@item.IdCitaInt">Editar</a>
+                                }
+                            }
+
+                            <a class="btn btn-secondary d-inline-block" asp-action="Details" asp-route-id="@item.IdCitaInt">
+                                Detalle
+                                <i class="fi fi-rr-search"></i>
+                            </a>
+
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-switch@3.3.4/dist/js/bootstrap-switch.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.estado-select').on('change', function () {
+                var select = $(this);
+                var citaId = select.data('id');
+                var nuevoEstado = select.val();
+
+                cambiarEstadoCitas(citaId, nuevoEstado);
+            });
+
+            function cambiarEstadoCitas(citaId, nuevoEstado) {
+                $.ajax({
+                    url: '/CitaInternas/CambiarEstadoCita', // Ruta al controlador
+                    type: 'POST',
+                    data: { id: citaId, nuevoEstado: nuevoEstado },
+                    success: function (response) {
+                        // Mostrar la alerta SweetAlert2 con botones personalizados
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'La cita se cambió de Estado',
+                            text: '¿Desea ver el detalle de la venta?',
+                            showCloseButton: true,
+                            showCancelButton: true,
+                            cancelButtonText: 'Cerrar',
+                            confirmButtonText: 'Ver detalle',
+                            onClose: function (modal) {
+                                if (modal !== 'Ver detalle') {
+                                    // Si no se hace clic en "Ver detalle", recargar la página
+                                    location.reload();
+                                }
+                            }
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Si se confirma la alerta, redireccionar a la página de detalle de la venta
+                                window.location.href = '/Ventas/Details/' + response.nuevaVentaId;
+                            }
+                        });
+
+                        // Mostrar SweetAlert adicional si el estado es "Cancelada" o "Incumplida"
+                        if (nuevoEstado === 'Cancelada' || nuevoEstado === 'Incumplida') {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'El estado de la cita se ha cambiado',
+                                text: 'El estado de la cita se ha cambiado a ' + nuevoEstado,
+                                confirmButtonText: 'OK',
+                                onClose: function () {
+                                    // Recargar la página después de cerrar el SweetAlert adicional
+                                    location.reload();
+                                }
+                            });
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Error al cambiar el estado de la cita.', error);
+                    }
+                });
+            }
+        });
+    </script>
+
+
+    @*  <script>
+        $(document).ready(function () {
+            $('.estado-select').on('change', function () {
+                var select = $(this);
+                var citaId = select.data('id');
+                var nuevoEstado = select.val();
+
+                cambiarEstadoCitas(citaId, nuevoEstado);
+            });
+
+            function cambiarEstadoCitas(citaId, nuevoEstado) {
+                $.ajax({
+                    url: '/CitaInternas/CambiarEstadoCita', // Ruta al controlador
+                    type: 'POST',
+                    data: { id: citaId, nuevoEstado: nuevoEstado },
+                    success: function (result) {
+                        // Mostrar la alerta SweetAlert2
+                        Swal.fire({
+                            icon: 'success',
+                            title: '¡Éxito!',
+                            text: 'La cita ha cambiado de estado exitosamente.',
+                            onClose: function () {
+                                // Recargar la página después de cerrar la alerta
+                                location.reload();
+                            }
+                        });
+                        console.log(result);
+                    },
+                    error: function (error) {
+                        console.error('Error al cambiar el estado de la cita.', error);
+                    }
+                });
+            }
+        });
+
+    </script>
+    *@
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#prueba').DataTable({
+                "language": {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+                },
+
+                "lengthMenu": [4, 6, 10, 15],
+                "pageLength": 10, // Número predeterminado de elementos por página
+                "search": {
+                    "search": "",
+                    "searchPlaceholder": "Buscar...",
+                },
+                "dom": '<"d-flex justify-content-between align-items-center"lf>t<"d-flex justify-content-between align-items-center"ip>',
+                "initComplete": function (settings, json) {
+                    $('.dataTables_filter input[type="search"]').css({ 'border-radius': '5px', 'padding-left': '10px' });
+                }
+            });
+        });
+    </script>
+}

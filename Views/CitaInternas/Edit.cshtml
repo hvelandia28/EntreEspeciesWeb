@@ -1,0 +1,265 @@
+﻿@model EntreEspeciesNuevo.models.CitaInterna
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="~/css/form.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-switch@3.3.4/dist/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anta&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+
+
+<hr />
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card rounded">
+            <div class="card-body">
+                <center> <h4 class="card-title" style="font-family: Arial, sans-serif;">Editar Cita</h4></center>
+                <hr />
+                <form asp-action="Edit" id="editForm">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" id="idCitaEditar" asp-for="IdCitaInt" />
+
+                    <div class="form-group row">
+                        <div class="col">
+                            <label asp-for="DocumentoCliente" class="control-label">Documento del Cliente:</label>
+                            <input asp-for="DocumentoCliente" class="form-control" readonly />
+                            <input type="hidden" asp-for="DocumentoCliente" />
+                            <span asp-validation-for="DocumentoCliente" class="text-danger"></span>
+                        </div>
+                        <div class="col">
+                            <label asp-for="IdMascota" class="control-lable">Nombre de la Mascota:</label>
+                            <input type="text" class="form-control" readonly value="@ViewBag.IdMascota" />
+                            <input type="hidden" asp-for="IdMascota" />
+                            <span asp-validation-for="IdMascota" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col">
+                            <label asp-for="IdServicio">Nombre del servicio:</label>
+                            <select id="IdServicio" asp-for="IdServicio" class="form-control" asp-items="ViewBag.IdServicio">
+                                <option value="">Seleccionar Servicio</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <label asp-for="Precio">Precio:</label>
+                            <input id="SubSer" asp-for="Precio" class="form-control" readonly />
+                            <span asp-validation-for="Precio" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FechaHora">Fecha y Hora:</label>
+                        <input id="fechaHora" asp-for="FechaHora" class="form-control" type="datetime-local" onchange="validarFecha()" required />
+                        <span asp-validation-for="FechaHora" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col">
+                            <label asp-for="Estado">Estado:</label>
+                            <input asp-for="Estado" class="form-control" readonly value="Pendiente" />
+                            <span asp-validation-for="Estado" class="text-danger"></span>
+                        </div>
+                        <div class="col">
+                            <label asp-for="PersonaCargo">Persona a Cargo:</label>
+                            <input asp-for="PersonaCargo" class="form-control" required oninput="validatePersonaCargo(event)" />
+                            <span asp-validation-for="PersonaCargo" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="form-group text-center">
+                        <input type="submit" value="Guardar" class="btn btn-primary" />
+                        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+
+        function mostrarAlertaErrorF(mensaje) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Fecha Incorrecta',
+                text: mensaje,
+                footer: 'Sistema de Información'
+            });
+        }
+
+        function validarFecha() {
+            var fechaHora = document.getElementById("fechaHora").value;
+            var idCitaEditar = document.getElementById("idCitaEditar").value;
+
+            if (!fechaHora) {
+                mostrarAlertaWarning('Debe ingresar una fecha y hora para la cita.');
+                return;
+            }
+
+            // Verificar en la base de datos si la cita ya existe para la fecha y hora seleccionadas, excluyendo la cita actual si se está editando
+            $.ajax({
+                url: '/CitaInternas/VerificarDisponibilidad',
+                method: 'POST',
+                data: { fechaHora: fechaHora, idCitaEditar: idCitaEditar },
+                success: function (response) {
+                    if (!response.citaDisponible) {
+                        mostrarAlertaErrorF('Ya existe una cita registrada para la fecha y hora seleccionadas.');
+                        // Limpiar la fecha y hora seleccionadas
+                        document.getElementById("fechaHora").value = '';
+                    }
+                },
+                error: function () {
+                    mostrarAlertaWarning('Error al verificar la disponibilidad de la cita.');
+                }
+            });
+        }
+
+    </script>
+
+    <script>
+        // Obtener el campo de entrada de fecha y hora
+        var fechaHoraInput = document.getElementById('fechaHora');
+
+        // Agregar un escuchador de eventos al campo de entrada de fecha y hora
+        fechaHoraInput.addEventListener('change', function () {
+            // Obtener la fecha y hora seleccionadas
+            var fechaHoraSeleccionada = new Date(this.value);
+
+            // Obtener la fecha actual
+            var fechaActual = new Date();
+
+            // Calcular la fecha máxima permitida (30 días en el futuro)
+            var fechaMaxima = new Date();
+            fechaMaxima.setDate(fechaMaxima.getDate() + 30);
+
+            // Comparar las fechas
+            if (fechaHoraSeleccionada < fechaActual || fechaHoraSeleccionada > fechaMaxima) {
+                // La fecha y hora seleccionada es una fecha pasada o más de 30 días en el futuro
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Fecha Incorrecta',
+                    text: 'Por favor, selecciona una fecha y hora válida dentro de los próximos 30 días.',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Ok',
+                    footer: 'Sistema de Información'
+                }).then((result) => {
+                    this.value = ''; // Limpiar el campo de entrada
+                });
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            // Intercepta el envío del formulario
+            $('#editForm').submit(function (event) {
+                event.preventDefault(); // Previene el envío normal del formulario
+                // Realizar todas las validaciones de los campos
+                if (!$(this).valid()) {
+                    // Si alguna validación falla, retornar false para evitar el envío del formulario
+                    return false;
+                }
+                // Verifica que todos los campos estén llenos
+                if (!validarCampos()) {
+                    return false;
+                }
+                // Realiza la solicitud AJAX
+                $.ajax({
+                    url: '@Url.Action("Edit", "CitaInternas")',
+                    type: 'POST',
+                    data: $('#editForm').serialize(),
+                    success: function (result) {
+                        // Muestra la alerta de actualización exitosa
+                        mostrarAlerta();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.error('Error en la solicitud AJAX:', textStatus, errorThrown);
+                    }
+                });
+            });
+
+            $(document).ready(function () {
+                $("#IdServicio").change(function () {
+                    var selectedServicioId = $(this).val();
+                    if (selectedServicioId) {
+                        $.ajax({
+                            url: "/Servicios/GetPrecioProducto",
+                            type: "GET",
+                            data: { servicioId: selectedServicioId },
+                            success: function (result) {
+                                $("#SubSer").val(result);
+                            },
+                            error: function (error) {
+                                console.error("Error al obtener el precio del servicio: ", error);
+                            }
+                        });
+                    }
+                });
+            });
+
+            // Función para validar que solo se ingresen letras en el campo Persona a Cargo
+            $("#PersonaCargo").on("input", function (event) {
+                const inputValue = event.target.value;
+
+                if (/[^a-zA-Z\s]/.test(inputValue)) {
+                    event.target.value = inputValue.replace(/[^a-zA-Z\s]/g, '');
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Carácter inválido',
+                        text: 'Solo se permite ingresar letras',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            });
+
+            // Función para validar que todos los campos estén llenos antes de enviar el formulario
+            function validarCampos() {
+                var personaCargo = $('#PersonaCargo').val();
+
+                if (personaCargo.trim() === '') {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Por Favor Llene Los Campos',
+                        text: 'Debe Ingresar Una Persona a Cargo.',
+                        footer: 'Sistema de Información',
+                        showConfirmButton: false,
+                        timer: 4000
+                    });
+                    return false;
+                }
+
+                return true;
+            }
+
+            function mostrarAlerta() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Actualización Exitosa',
+                    text: 'La Cita se actualizó correctamente.',
+                    footer: 'Sistema de Información',
+                    showConfirmButton: false
+                });
+
+                setTimeout(function () {
+                    window.location.href = '@Url.Action("Index", "CitaInternas")';
+                }, 3000);
+            }
+        });
+    </script>
+}
+
